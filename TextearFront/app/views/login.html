@@ -1,0 +1,33 @@
+<div class="login_wrapper">
+  <div class="animate form login_form">
+    <section class="login_content">
+        <form name="form" ng-submit="form.$valid && vm.login()" novalidate>
+        <h1>Contectese al sistema</h1>
+        <div class="form-group" ng-class="{ 'has-error': form.$submitted && form.username.$invalid }">
+          <input type="text" name="username" class="form-control" ng-model="vm.username" placeholder="Usuario" required />
+          <div ng-messages="form.$submitted && form.username.$error" class="help-block">
+              <div ng-message="required">Ingrese el usuario</div>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.$submitted && form.password.$invalid }">
+          <input type="password" name="password" class="form-control" ng-model="vm.password" placeholder="Contrasena" required />
+          <div ng-messages="form.$submitted && form.password.$error" class="help-block">
+              <div ng-message="required">Ingrese la contrasena</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button ng-disabled="vm.loading" class="btn btn-default submit">Inicio</button>
+          <a class="reset_pass" href="#">No recuerda la contrasena?</a>
+        </div>
+        <div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
+        <div class="clearfix"></div>
+
+        <div class="separator">
+          <p class="change_link">No tiene clave?
+            <a href="#/registro" class="to_register"> Registro </a>
+          </p>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

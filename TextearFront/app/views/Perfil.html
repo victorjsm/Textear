@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<div class="full-body nav-md">  
+    <div class="container body">
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view" style="width:100%">
+                    <sidebar></sidebar>
+                </div>
+            </div>
+
+            <navbar></navbar>
+            <!-- page content -->
+
+
+
+
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Administracion</h3>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div ng-if="user.tipo === 'cliente'">
+                                    <div class="x_title">
+                                        <h2>Empresa<small></small></h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li><button type="button" class="btn btn-success"><a href="./index.html#/cambio_clave">Cambiar clave</a></button></li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <br />
+                                        <form data-parsley-validate class="form-horizontal form-label-left">
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="emp-rif">RIF <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <h4>{{user.empresa.rif}}</h4>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="emp-nit">NIT <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <h4 ng-if="!edit2">{{user.empresa.nit}}</h4>
+                                                    <input type="text" id="emp-nit" required="required" class="form-control col-md-7 col-xs-12"
+                                                           ng-if="edit2" ng-model="user.empresa.nit">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="emp-nomb">Nombre <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <h4 ng-if="!edit2">{{user.empresa.nombre}}</h4>
+                                                    <input type="text" id="emp-nomb" required="required" class="form-control col-md-7 col-xs-12"
+                                                           ng-if="edit2" ng-model="user.empresa.nombre">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="emp-dir">Direccion <span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <h4 ng-if="!edit2">{{user.empresa.direccion}}</h4>
+                                                    <input type="text" id="emp-dir" required="required" class="form-control col-md-7 col-xs-12"
+                                                           ng-if="edit2" ng-model="user.empresa.direccion">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="emp-tel" class="control-label col-md-3 col-sm-3 col-xs-12">Telefono</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <h4 ng-if="!edit2">{{user.empresa.telefono}}</h4>
+                                                    <input id="emp-tel" class="form-control col-md-7 col-xs-12" type="text" name="mensaje"
+                                                           ng-if="edit2" ng-model="user.empresa.telefono">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="emp-web" class="control-label col-md-3 col-sm-3 col-xs-12">Pagina Web</label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <h4 ng-if="!edit2">{{user.empresa.pagina}}</h4>
+                                                    <input id="emp-web" class="form-control col-md-7 col-xs-12" type="text" name="mensaje"
+                                                           ng-if="edit2" ng-model="user.empresa.pagina">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                                <button type="button" ng-click="cambio2()" class="btn btn-primary" ng-if="!edit2">Editar</button>
+                                                <button type="button" ng-click="guardaremp()" class="btn btn-primary" ng-if="edit2" data-dismiss="modal">Guardar</button>
+                                                <button type="button" ng-click="cambio2()" class="btn" ng-if="edit2">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="x_title">
+                                    <h2>Perfil<small></small></h2>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <br />
+                                    <form data-parsley-validate class="form-horizontal form-label-left">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="user-id">ID <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <h4>{{user.id}}</h4>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="user-nombre">Nombre <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <h4 ng-if="!edit">{{user.nombre}}</h4>
+                                                <input type="text" id="user-nombre" required="required" class="form-control col-md-7 col-xs-12"
+                                                       ng-if="edit" ng-model="user.nombre">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="user-email">Email <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <h4 ng-if="!edit">{{user.email}}</h4>
+                                                <input type="text" id="user-email" required="required" class="form-control col-md-7 col-xs-12"
+                                                       ng-if="edit" ng-model="user.email">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="user-tel" class="control-label col-md-3 col-sm-3 col-xs-12">Telefono</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <h4 ng-if="!edit">{{user.telefono}}</h4>
+                                                <input id="user-tel" class="form-control col-md-7 col-xs-12" type="text" name="mensaje"
+                                                       ng-if="edit" ng-model="user.telefono">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="user-fax" class="control-label col-md-3 col-sm-3 col-xs-12">Fax</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <h4 ng-if="!edit">{{user.fax}}</h4>
+                                                <input id="user-fax" class="form-control col-md-7 col-xs-12" type="text" name="mensaje" 
+                                                       ng-if="edit" ng-model="user.fax">
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                                <button type="button" ng-click="cambio()" class="btn btn-primary" ng-if="!edit">Editar</button>
+                                                <button type="button" ng-click="guardarUser()" class="btn btn-primary" ng-if="edit" data-dismiss="modal">Guardar</button>
+                                                <button type="button" ng-click="cambio()" class="btn" ng-if="edit">Cancelar</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /page content -->
+        </div>
+    </div>
+</div>

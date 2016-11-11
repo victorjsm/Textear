@@ -1,0 +1,181 @@
+<div class="login">
+    <div class="login_wrapper">
+        <div id="register" class="animate form registration_form">
+
+            <form name="form">
+                <h1>Empresa Asociada</h1>
+                <div>
+                    <input type="text" name="rif" class="form-control" placeholder="RIF" required ng-model="emp.rif" />
+                </div>
+                <div>
+                    <input type="text" name="nit" class="form-control" placeholder="NIT" required ng-model="emp.nit" />
+                </div>
+                <div>
+                    <input type="text" name="empNombre" class="form-control" placeholder="Nombre Empresa" required ng-model="emp.nombre" />
+                </div>
+                <div>
+                    <input type="text" name="direccion" class="form-control" placeholder="Direccion" required ng-model="emp.direccion" />
+                </div>
+                <div>
+                    <input type="url" class="form-control" placeholder="Pagina Web" required name="pagina" ng-model="emp.pagina" 
+                           style="border-radius: 3px;
+                               -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               border: 1px solid #c8c8c8;
+                               color: #777;
+                               margin: 0 0 20px;
+                               width: 100%;"/>
+                </div>
+                <div>
+                    <input type="number" class="form-control" placeholder="Telefono" required name="empTelefono" ng-model="emp.telefono"
+                           style="    border-radius: 3px;
+                               -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               border: 1px solid #c8c8c8;
+                               color: #777;
+                               margin: 0 0 20px;
+                               width: 100%;"/>
+                </div>
+                <div>
+                    <h1>Usuario principal</h1>
+                </div>
+                <div>
+                    <input type="text" class="form-control" placeholder="Usuario" required ng-model="usuario.username" name="username" />
+                </div>
+                <div>
+                    <input type="text" class="form-control" placeholder="Nombre" required name="userNombre" ng-model="usuario.nombre"/>
+                </div>
+                <div>
+                    <input type="email" class="form-control" placeholder="Email" required name="email" ng-model="usuario.email"/>
+                </div>
+                <div>
+                    <input type="number" class="form-control" placeholder="Telefono" required name="userTelefono" ng-model="usuario.telefono"
+                           style="    border-radius: 3px;
+                           -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                           -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                           box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                           border: 1px solid #c8c8c8;
+                           color: #777;
+                           margin: 0 0 20px;
+                           width: 100%;"/>
+                </div>
+                <div>
+                    <input type="number" class="form-control" placeholder="Fax" required name="fax" ng-model="usuario.fax"
+                           style="    border-radius: 3px;
+                           -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                           -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                           box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                           border: 1px solid #c8c8c8;
+                           color: #777;
+                           margin: 0 0 20px;
+                           width: 100%;"/>
+                </div>
+                <div>
+                    <input type="password" class="form-control" placeholder="Contrasena" required name="password" ng-model="usuario.password" />
+                </div>
+                <div>
+                    <input type="password" class="form-control" placeholder="Contrasena" required name="passwordconf" ng-model="usuario.passwordconf" />
+                </div>
+                <button ng-click="register()">RESET</button>
+            </form>
+            
+            
+            
+<!--            <section class="register_content">
+                <form name="form">
+                    <h1>Empresa Asociada</h1>
+                    <div>
+                        <input type="text" name="rif" class="form-control" placeholder="RIF" required ng-model="vm.rif" />
+                    </div>
+                    <div>
+                        <input type="text" name="nit" class="form-control" placeholder="NIT" required ng-model="vm.nit" />
+                    </div>
+                    <div>
+                        <input type="text" name="empNombre" class="form-control" placeholder="Nombre Empresa" required ng-model="vm.empNombre" />
+                    </div>
+                    <div>
+                        <input type="text" name="direccion" class="form-control" placeholder="Direccion" required ng-model="vm.direccion" />
+                    </div>
+                    <div>
+                        <input type="url" class="form-control" placeholder="Pagina Web" required name="pagina" ng-model="vm.pagina" 
+                               style="border-radius: 3px;
+                               -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               border: 1px solid #c8c8c8;
+                               color: #777;
+                               margin: 0 0 20px;
+                               width: 100%;"/>
+                    </div>
+                    <div>
+                        <input type="number" class="form-control" placeholder="Telefono" required name="empTelefono" ng-model="vm.empTelefono"
+                               style="    border-radius: 3px;
+                               -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               border: 1px solid #c8c8c8;
+                               color: #777;
+                               margin: 0 0 20px;
+                               width: 100%;"/>
+                    </div>
+                    <div>
+                        <h1>Usuario principal</h1>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Usuario" required ng-model="vm.username" name="username" />
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Nombre" required name="userNombre" ng-model="vm.userNombre"/>
+                    </div>
+                    <div>
+                        <input type="email" class="form-control" placeholder="Email" required name="email" ng-model="vm.email"/>
+                    </div>
+                    <div>
+                        <input type="number" class="form-control" placeholder="Telefono" required name="userTelefono" ng-model="vm.userTelefono"
+                               style="    border-radius: 3px;
+                               -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               border: 1px solid #c8c8c8;
+                               color: #777;
+                               margin: 0 0 20px;
+                               width: 100%;"/>
+                    </div>
+                    <div>
+                        <input type="number" class="form-control" placeholder="Fax" required name="fax" ng-model="vm.fax"
+                               style="    border-radius: 3px;
+                               -ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               -o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0, 0, 0, 0.08) inset;
+                               border: 1px solid #c8c8c8;
+                               color: #777;
+                               margin: 0 0 20px;
+                               width: 100%;"/>
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Contrasena" required name="password" ng-model="vm.password" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Contrasena" required name="passwordconf" ng-model="vm.passwordconf" />
+                    </div>
+                    
+                    <div>
+                        <button ng-click="register()" class="btn btn-default submit">Crear</button>
+                        <button ng-click="reset()">RESET</button>
+                    </div>
+                    
+                    <div class="separator">
+                        <h1>{{carajo}}</h1>
+                        <p class="change_link">Ya es miembro ?
+                            <a href="#signin" class="to_register"> Inicie sesion </a>
+                        </p>
+
+
+                    </div>
+                </form>
+            </section>-->
+        </div>
+    </div>
+</div>

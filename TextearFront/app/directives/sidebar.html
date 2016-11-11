@@ -1,0 +1,85 @@
+<!--  ######################SIDEBAR############################# -->
+
+
+<div class="col-md-3 left_col sidebar-division">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Textear</span></a>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <!-- menu profile quick info -->
+
+        <!-- /menu profile quick info -->
+
+        <br />
+
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <ul class="nav side-menu">
+                    <li><a href="./index.html#/buzon_entrada" class="sidebar-accor"><i class="fa fa-envelope"></i> Buzon</a></li>
+                    <li><a><i class="fa fa-edit"></i> Tareas <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li ng-if="acceso(user.tipo, 'tarea')"><a href="./index.html#/tarea_mensaje">Mensaje</a></li>
+                            <li ng-if="acceso(user.tipo, 'tarea')"><a href="./index.html#/tarea_inscripcion">Inscripcion</a></li>
+                            <li ng-if="acceso(user.tipo, 'tarea')"><a href="./index.html#/tarea_encuesta">Encuesta</a></li>
+                            <li ng-if="acceso(user.tipo, 'tarea')"><a href="./index.html#/tarea_consulta">Consulta</a></li>
+                            <li ng-if="acceso(user.tipo, 'tarea')"><a href="./index.html#/tarea_sistema">Sistema a Sistema</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-users"></i> Contactos <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li ng-if="acceso(user.tipo, 'abo')"><a href="./index.html#/abonados">Abonados</a></li>
+                            <li ng-if="acceso(user.tipo, 'abo')"><a href="./index.html#/grupos">Grupos</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-table"></i> Administracion <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li ng-if="acceso(user.tipo, 'rec')"><a href="./index.html#/recargas">Recargas</a></li>
+                            <li><a href="./index.html#/perfil">Perfil</a></li>
+                            <li ng-if="acceso(user.tipo, 'abo')"><a href="./index.html#/lista_negra">Lista negra</a></li>
+                            <li ng-if="user.tipo === 'admin'"><a href="./index.html#/canal">Canal</a></li>
+                            <li ng-if="user.tipo === 'admin'"><a href="./index.html#/prefijo">Prefijo</a></li>
+                            <li ng-if="user.tipo === 'admin' || user.tipo === 'cliente'"><a href="./index.html#/usuarios">Usuarios</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-bar-chart-o"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="./index.html#/reporte_mensajes">Reporte de mensajes</a></li>
+                            <li ng-if="acceso(user.tipo, 'tarea')"><a href="./index.html#/tareas_interactivas">Tareas interactivas</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- /sidebar menu -->
+
+        <!-- /menu footer buttons -->
+        <div class="sidebar-footer hidden-small">
+            <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+            </a>
+            <a data-toggle="tooltip" data-placement="top" title="Logout">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+            </a>
+        </div>
+        <!-- /menu footer buttons -->
+    </div>
+</div>
+
+
+
+
+
+
+<!--  ###################### SCRIPTS ############################# -->
+<script type="text/javascript" src="js/services/sidebar.js"></script>

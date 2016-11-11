@@ -1,0 +1,99 @@
+<div class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h2>Usuario</h2>
+
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="modal-body">
+
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Tipo <span class="required">*</span></label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" ng-model="u.tipo">
+                                <option ng-repeat="tipo in tipos" >{{tipo}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <p ng-if="u.tipo === 'basico'">Puede ver los mensajes recibidos y generar reportes</p>
+                            <p ng-if="u.tipo === 'medio'">Puede ver los mensajes recibidos, generar reportes, manejar tareas y abonados</p>
+                            <p ng-if="u.tipo === 'avanzado'">Puede ver los mensajes recibidos, generar reportes, manejar tareas, abonados y recargas</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id-usuario">ID<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="id-usuario" required="required" class="form-control col-md-7 col-xs-12" ng-model="u.id">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-usuario">Nombre<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="nombre-usuario" required="required" class="form-control col-md-7 col-xs-12" ng-model="u.nombre">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email-usuario">Email<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="email" id="email-usuario" required="required" class="form-control col-md-7 col-xs-12" ng-model="u.email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="telefono-usuario">Telefono<span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="number" id="telefono-usuario" required="required" class="form-control col-md-7 col-xs-12" ng-model="u.telefono">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fax-usuario">Fax
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="fax-usuario" class="form-control col-md-7 col-xs-12" ng-model="u.fax">
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password-usuario">Constrasena
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="password" id="password-usuario" class="form-control col-md-7 col-xs-12" ng-model="u.password">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password2-usuario">Confirmacion contrasena
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="password" id="password2-usuario" class="form-control col-md-7 col-xs-12" ng-model="u.password2">
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

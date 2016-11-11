@@ -1,0 +1,185 @@
+<div class="full-body nav-md">  
+    <div class="container body">
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view" style="width:100%">
+                    <sidebar></sidebar>
+                </div>
+            </div>
+
+            <navbar></navbar>
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Reporte</h3>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Mensajes<small>enviados y recibidos</small></h2>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                
+                                <div class="x_content">
+                                    <br />
+                                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Canal <span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control">
+                                                    <option ng-repeat="canal in canales">{{canal}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tarea">Tarea <span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control">
+                                                    <option ng-repeat="tarea in tareas">{{tarea}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Reporte</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="btn-group" data-toggle="buttons">
+                                                    <label id="dia-btn" class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                        <input type="radio"> Por dia del mes
+                                                    </label>
+                                                    <label id="mes-btn" class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                        <input type="radio"> Por varios meses
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="dia-div">
+                                            <div class="form-group"> <!-- Date input -->
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Mes <span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control" id="date" name="date" placeholder="MM/YYY" type="text"/>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div id="mes-div">
+                                            <div class="form-group"> <!-- Date input -->
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Mes inicial <span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control" id="date" name="date" placeholder="MM/YYY" type="text"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group"> <!-- Date input -->
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Mes final <span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control" id="date" name="date" placeholder="MM/YYY" type="text"/>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                                <button type="submit" class="btn btn-success">Generar</button>
+                                            </div>
+                                        </div>
+                                        
+
+                                    </form>
+                                </div>
+                                
+                            </div>
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Reporte generado</h2>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="row">
+                                        <div class="col-sm-12 mail_view">
+                                            <canvas id="line" class="chart chart-line" chart-data="data"
+                                                    chart-labels="labels" chart-series="series" chart-options="options"
+                                                    chart-dataset-override="datasetOverride" chart-click="onClick"
+                                                    chart-legend="true">
+                                            </canvas> 
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 id="titulo-preview">Mensajes</h3>
+                                            <div id="fileContent2" class="table-responsive">
+                                                <table id="datatable-responsive" class="table table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <th class="column-title">Tipo</th>
+                                                            <th class="column-title" ng-repeat="label in labels">{{label}} </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="even pointer" >
+                                                            <td class="column-title" style="background-color: rgba(151,187,205,1);color: white;font-weight: bold">Enviados</td>
+                                                            <td class=" " ng-repeat="col in data[0]">{{col}}</td>
+                                                        </tr>
+                                                        <tr class="even pointer" >
+                                                            <td class="column-title" style="background-color: rgba(220,220,220,1);color: white;font-weight: bold">Recibidos</td>
+                                                            <td class=" " ng-repeat="col in data[1]">{{col}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <!-- /page content -->
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+      var date_input=$('input[name="date"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'dd/mm/yyyy',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+        startDate: '0d',
+      };
+      date_input.datepicker(options);
+    })
+</script>
+
+<script>
+    $(document).ready(function(){
+        $("#mes-div").hide();
+        $("#mes-btn").click(function(){
+            $("#mes-div").show();
+            $("#dia-div").hide();
+        });
+        $("#dia-btn").click(function(){
+            $("#mes-div").hide();
+            $("#dia-div").show();
+        });
+    });    
+</script>

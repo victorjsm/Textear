@@ -1,0 +1,84 @@
+<div class="full-body nav-md">  
+    <div class="container body">
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view" style="width:100%">
+                    <sidebar></sidebar>
+                </div>
+            </div>
+
+            <navbar></navbar>
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Administracion</h3>
+                        </div>
+
+                        <div class="title_right">
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+
+
+                                <div class="input-group">
+                                    <input type="text" ng-model="search" class="form-control" placeholder="Search for...">
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Abonados<small>que no van a continuar recibiendo los servicios de información SMS prestados por ustedes.</small></h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="row">
+                                        <div class="col-sm-12 mail_view">
+                                            <div dir-paginate="abonado in abonados|filter:search|itemsPerPage:10">
+                                                <div class="mail_list">
+                                                    <div class="left">
+                                                        <i class="fa fa-circle"></i>
+                                                    </div>
+                                                    <div class="right">
+                                                        <div class="inbox-body">
+
+                                                            <div class="sender-info">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <strong>Telefono: {{abonado.telefono}}</strong>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="view-mail">
+                                                                <h3>Nombre: {{abonado.nombre}}</h3>
+                                                                <p>CI: {{abonado.ci}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <!-- /page content -->
+        </div>
+    </div>
+</div>

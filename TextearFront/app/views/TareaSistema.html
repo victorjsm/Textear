@@ -1,0 +1,108 @@
+<div class="full-body nav-md">  
+    <div class="container body">
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view" style="width:100%">
+                    <sidebar></sidebar>
+                </div>
+            </div>
+
+            <navbar></navbar>
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Tarea</h3>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Sistema</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li>
+                                            <button type="button" class="btn btn-success" ng-click="InvCreateModal(abonados,grupos,bandejas,canales)">
+                                                Crear Tarea
+                                            </button>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="row">
+                                        
+                                        <div class="alert" ng-class="MensajeClass" ng-if="terminoCrear">
+                                            <strong>Success!</strong> Indicates a successful or positive action.
+                                        </div>
+
+           
+                                        <div class="col-sm-12 mail_view">
+                                            <div ng-controller="DataReloadWithPromiseCtrl as showCase">
+                                                <p>
+                                                    <button ng-click="showCase.reloadData()" type="button" class="btn btn-info">
+                                                        <i class="fa fa-refresh"></i>&nbsp;Reload data
+                                                    </button>
+                                                    <button ng-click="showCase.dtInstance.changeData(showCase.newPromise)" type="button" class="btn btn-info">
+                                                        <i class="fa fa-exchange"></i>&nbsp;Change data
+                                                    </button>
+                                                </p>
+                                                <table datatable dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="dtInstance" class="row-border hover"></table>
+                                            </div>
+                                            <div  id="abonados" class="table-responsive">
+                                                <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <th>
+                                                                <input type="checkbox" id="check-all" class="flat" 
+                                                                       ng-model="selectAll" 
+                                                                       ng-click="toggleAll(selectAll, selected)">
+                                                            </th>
+                                                            <th class="column-title">Nombre</th>
+                                                            <th class="column-title">Estado</th>
+                                                            <th class="column-title">Fecha Envio</th>
+                                                            <th class="column-title">Acciones: 
+                                                                <a ng-if="selectOne" ng-click="borrar()">Eliminar</a>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="tarea in ::tareas" class="even pointer">
+                                                            <td class="a-center ">
+                                                                <input type="checkbox" class="flat" name="table_records"
+                                                                       ng-model="selected[tarea.nombre]"
+                                                                       ng-click="addselect(tarea.nombre,tarea)">
+                                                            </td>
+                                                            <td class="datos">{{ tarea.nombre }}</td>
+                                                            <td class="datos">{{ tarea.estado }}</td>
+                                                            <td class="datos">{{ tarea.fechaEnvio }}</td>
+                                                            <td class="a-center ">
+                                                                <div ng-if="selected[tarea.nombre]">
+                                                                    <button class="modif-btn" ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">Ver</button>                                                                    
+                                                                </div>
+                                                            </td> 
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <!-- /page content -->
+        </div>
+    </div>
+</div>

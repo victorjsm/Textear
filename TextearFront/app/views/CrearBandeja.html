@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<div class="full-body nav-md">  
+    <div class="container body">
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view" style="width:100%">
+                    <sidebar></sidebar>
+                </div>
+            </div>
+
+            <navbar></navbar>
+            <!-- page content -->
+
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Buzon</h3>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Crear Bandeja</h2>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <br />
+                                    <div id="abonado-section">
+                                        <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Nombre<span class="required">*</span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input ng-model="bandeja.nombre" type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Tipo <span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <select class="form-control" ng-model="bandeja.tipo">
+                                                        <option ng-repeat="t in tipos" >{{t}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div id="response-message" class="alert alert-info" style="text-align: center">{{mensaje}}</div>
+                                            <div class="ln_solid"></div>
+                                            <div class="form-group">
+                                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                                    <button type="submit" class="btn btn-primary">Cancel</button>
+                                                    <button id="submit-boton" type="submit" class="btn btn-success" ng-click="crearbandeja()">Submit</button>
+                                                </div>
+                                            </div>
+
+
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /page content -->
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $("#response-message").hide();
+        $("#submit-boton").click(function(){
+            $("#response-message").show();
+        });
+
+    });    
+</script>

@@ -1,0 +1,278 @@
+<div class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h2>Mensaje <small>personales o a grupos</small></h2>
+
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="modal-body">
+
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Canal de envio <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <h4 ng-if="!edit">{{tarea.canal.codigo}}</h4>
+                            <select ng-options="canal.codigo for canal in canales" 
+                                    class="form-control edit-sec" 
+                                    ng-model="tarea.canal"
+                                    ng-if="edit"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Nombre de la tarea <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <h4>{{tarea.nombre}}</h4>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Bandeja <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select ng-if="edit" class="form-control edit-sec" ng-model="tarea.bandeja">
+                                <option ng-repeat="bandeja in bandejas" >{{bandeja.nombre}}</option>
+                            </select>
+                            <h4 ng-if="!edit">{{tarea.bandeja}}</h4>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensaje" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea ng-if="edit" placeholder="{{tarea.mensaje}}" class="form-control col-md-7 col-xs-12" id="comment" ng-model="tarea.mensaje"></textarea>
+                            <h4 ng-if="!edit">{{tarea.mensaje}}</h4>
+                        </div>
+                    </div>
+
+                    <div class="form-group"> <!-- Date input -->
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Fecha de creacion <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <h4>{{tarea.fechaCreacion}}</h4>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group"> <!-- Date input -->
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Fecha de envio <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input ng-if="edit" class="form-control" id="date" name="date" placeholder="{{tarea.fechaEnvio}}" type="text" ng-model="tarea.fechaEnvio"/>
+                            <h4 ng-if="!edit">{{tarea.fechaEnvio}}</h4>
+                        </div>
+                    </div>
+
+                    <div class="form-group"> <!-- Date input -->
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Fecha de expiracion <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input ng-if="edit" class="form-control" id="date" name="date" placeholder="{{tarea.fechaExpiracion}}" type="text" ng-model="tarea.fechaExpiracion"/>
+                            <h4 ng-if="!edit">{{tarea.fechaExpiracion}}</h4>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group edit-sec" ng-if="!edit">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                               style="margin-bottom: 20px">Abonados</label>
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+                            <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
+                                <thead>
+                                    <tr class="headings">
+
+                                        <th class="column-title">Nombre</th>
+                                        <th class="column-title">Telefono</th>
+                                        <th class="column-title">Cedula</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="abonado in ::tarea.abonados" class="even pointer">
+                                        <td class="datos">{{ abonado.nombre}}</td>
+                                        <td class="datos">{{ abonado.telefono}}</td>
+                                        <td class="datos">{{ abonado.ci}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="form-group edit-sec" ng-if="!agregarAbo">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                               style="margin-bottom: 20px">Abonados Actuales</label>
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+                            <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
+                                <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            <input type="checkbox" id="check-all" class="flat" 
+                                                   ng-model="selectAll" 
+                                                   ng-click="toggleAll(selectAll, selected, true)">
+                                        </th>
+                                        <th class="column-title">Nombre</th>
+                                        <th class="column-title">Telefono</th>
+                                        <th class="column-title">Cedula</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="abonado in ::tarea.abonados" class="even pointer">
+                                        <td class="a-center ">
+                                            <input type="checkbox" class="flat" name="table_records"
+                                                   ng-model="selected[abonado.ci]"
+                                                   ng-click="addselect(abonado.ci,abonado,true)">
+                                        </td>
+                                        <td class="datos">{{ abonado.nombre }}</td>
+                                        <td class="datos">{{ abonado.telefono }}</td>
+                                        <td class="datos">{{ abonado.ci }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <button class="btn btn-primary" ng-click="agregarAbonados()">Agregar Abonados</button>
+                            <button ng-if="selectOne" class="btn btn-primary" ng-click="elim();close()">Eliminar</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group" ng-if="agregarAbo">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Agregar Destinatario</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="gender" class="btn-group" data-toggle="buttons">
+                                <label id="abonado-btn" class="btn btn-default" data-toggle-class="btn-primary" 
+                                       data-toggle-passive-class="btn-default" ng-click="toggleNone();setChosen(true)">
+                                    <input type="radio" name="gender" > Abonados
+                                </label>
+                                <label id="grupo-btn" class="btn btn-default" data-toggle-class="btn-primary" 
+                                       data-toggle-passive-class="btn-default" ng-click="toggleNone();setChosen(false)">
+                                    <input type="radio" name="gender"> Grupos
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="abonado-section" ng-if="agregarAbo">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+                            <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
+                                <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            <input type="checkbox" id="check-all" class="flat" 
+                                                   ng-model="selectAll" 
+                                                   ng-click="toggleAll(selectAll, selected)">
+                                        </th>
+                                        <th class="column-title">Nombre</th>
+                                        <th class="column-title">Telefono</th>
+                                        <th class="column-title">Cedula</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="abonado in ::abonados" class="even pointer">
+                                        <td class="a-center ">
+                                            <input type="checkbox" class="flat" name="table_records"
+                                                   ng-model="selected[abonado.ci]"
+                                                   ng-click="addselect(abonado.ci, abonado)">
+                                        </td>
+                                        <td class="datos">{{ abonado.nombre}}</td>
+                                        <td class="datos">{{ abonado.telefono}}</td>
+                                        <td class="datos">{{ abonado.ci}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="form-group" id="grupo-section" ng-if="agregarAbo">
+
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+                            <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width: 100%">
+                                <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            <input type="checkbox" id="check-all" class="flat" 
+                                                   ng-model="selectAll" 
+                                                   ng-click="toggleAll(selectAll, selected)">
+                                        </th>
+                                        <th class="column-title">Nombre</th>
+                                        <th class="column-title">Miembros</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="grupo in ::grupos" class="even pointer">
+                                        <td class="a-center ">
+                                            <input type="checkbox" class="flat" name="table_records"
+                                                   ng-model="selected[grupo.nombre]"
+                                                   ng-click="addselect(grupo.nombre,grupo)">
+                                        </td>
+                                        <td class="datos">{{ grupo.nombre }}</td>
+                                        <td class="datos">{{ grupo.numero }}</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> 
+
+
+
+
+
+                    <div class="form-group" ng-if="!edit">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Precio total de la tarea <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <h4>{{tarea.precio}}</h4>
+                        </div>
+
+                    </div>
+
+
+
+                </form>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="cambio()" class="btn btn-primary" ng-if="!edit">Editar</button>
+                <button type="button" ng-click="close()" class="btn btn-primary" ng-if="edit" data-dismiss="modal">Guardar</button>
+                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var date_input = $('input[name="date"]'); //our date input has the name "date"
+        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+        var options = {
+            format: 'dd/mm/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+            startDate: '0d',
+        };
+        date_input.datepicker(options);
+    })
+</script>
+
+
+<script ng-if="agregarAbo">
+    $(document).ready(function () {
+        $("#grupo-section").hide();
+        $("#grupo-btn").click(function () {
+            $("#grupo-section").show();
+            $("#abonado-section").hide();
+        });
+        $("#abonado-btn").click(function () {
+            $("#grupo-section").hide();
+            $("#abonado-section").show();
+        });
+    });
+</script>

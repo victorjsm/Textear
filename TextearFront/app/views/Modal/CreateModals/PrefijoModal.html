@@ -1,0 +1,40 @@
+<div class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h2>Crear Prefijo<small></small></h2>
+
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="modal-body">
+
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Codigo </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="prefijo.codigo">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Costo MT </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="prefijo.costoMT">
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

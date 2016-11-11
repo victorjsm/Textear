@@ -1,0 +1,188 @@
+<div class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h2>Mensaje <small>personales o a grupos</small></h2>
+
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="modal-body">
+
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Canal de envio <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" ng-model="tarea.canal">
+                                <option ng-repeat="canal in canales" >{{canal.codigo}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Nombre de la tarea <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="tarea.nombre">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Bandeja <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control" ng-model="tarea.bandeja">
+                                <option ng-repeat="bandeja in bandejas" >{{bandeja.nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mensaje" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control form-control col-md-7 col-xs-12" id="comment" ng-model="tarea.mensaje"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Destinatario</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="gender" class="btn-group" data-toggle="buttons">
+                                <label id="abonado-btn" class="btn btn-default" data-toggle-class="btn-primary" 
+                                       data-toggle-passive-class="btn-default" ng-click="toggleNone();setChosen(true)">
+                                    <input type="radio" name="gender" > Abonados
+                                </label>
+                                <label id="grupo-btn" class="btn btn-default" data-toggle-class="btn-primary" 
+                                       data-toggle-passive-class="btn-default" ng-click="toggleNone();setChosen(false)">
+                                    <input type="radio" name="gender"> Grupos
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="abonado-section">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+                            <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
+                                <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            <input type="checkbox" id="check-all" class="flat" 
+                                                   ng-model="selectAll" 
+                                                   ng-click="toggleAll(selectAll, selected)">
+                                        </th>
+                                        <th class="column-title">Nombre</th>
+                                        <th class="column-title">Telefono</th>
+                                        <th class="column-title">Cedula</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="abonado in ::abonados" class="even pointer">
+                                        <td class="a-center ">
+                                            <input type="checkbox" class="flat" name="table_records"
+                                                   ng-model="selected[abonado.ci]"
+                                                   ng-click="addselect(abonado.ci,abonado)">
+                                        </td>
+                                        <td class="datos">{{ abonado.nombre }}</td>
+                                        <td class="datos">{{ abonado.telefono }}</td>
+                                        <td class="datos">{{ abonado.ci }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="grupo-section">
+                        
+                        <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12">
+                            <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width: 100%">
+                                <thead>
+                                    <tr class="headings">
+                                        <th>
+                                            <input type="checkbox" id="check-all" class="flat" 
+                                                   ng-model="selectAll" 
+                                                   ng-click="toggleAll(selectAll, selected)">
+                                        </th>
+                                        <th class="column-title">Nombre</th>
+                                        <th class="column-title">Miembros</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="grupo in ::grupos" class="even pointer">
+                                        <td class="a-center ">
+                                            <input type="checkbox" class="flat" name="table_records"
+                                                   ng-model="selected[grupo.nombre]"
+                                                   ng-click="addselect(grupo.nombre,grupo)">
+                                        </td>
+                                        <td class="datos">{{ grupo.nombre }}</td>
+                                        <td class="datos">{{ grupo.numero }}</td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                                            
+
+
+
+                    <div class="form-group"> <!-- Date input -->
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Fecha de envio <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control" id="date" name="date" placeholder="DD/MM/YYY" type="text" ng-model="tarea.fecha"/>
+                        </div>
+                    </div>
+                    
+                </form>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#fileContent2").hide();
+        $("#titulo-preview").hide();
+        $("#csv-btn").click(function () {
+            $("#grupo-section").show();
+            $("#abonado-section").hide();
+            $("#fileContent2").show();
+            $("#titulo-preview").show();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+      var date_input=$('input[name="date"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'dd/mm/yyyy',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+        startDate: '0d',
+      };
+      date_input.datepicker(options);
+    })
+</script>
+
+
+<script>
+    $(document).ready(function(){
+        $("#grupo-section").hide();
+        $("#grupo-btn").click(function(){
+            $("#grupo-section").show();
+            $("#abonado-section").hide();
+        });
+        $("#abonado-btn").click(function(){
+            $("#grupo-section").hide();
+            $("#abonado-section").show();
+        });
+    });    
+</script>

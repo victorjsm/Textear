@@ -1,0 +1,148 @@
+<div class="full-body nav-md">  
+    <div class="container body">
+        <div class="main_container">
+
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view" style="width:100%">
+                    <sidebar></sidebar>
+                </div>
+            </div>
+
+            <navbar></navbar>
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Administracion</h3>
+                        </div>
+
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Recargas</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><button type="button" class="btn btn-success"><a href="./index.html#/recargar">+ Recargar</a></button></li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <div class="row">
+                                        <div class="col-sm-12 mail_view">
+                                            
+                                            
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <div class="x_panel">
+                                                    <div class="x_title">
+                                                        <h2>Historial de recargas</h2>
+                                                        
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="x_content">
+                                                        
+                                                        <table id="datatable-buttons" class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Fecha Deposito</th>
+                                                                    <th>Fecha registro</th>
+                                                                    <th>Concepto</th>
+                                                                    <th>Periodo</th>
+                                                                    <th>Realizada por</th>
+                                                                    <th>Monto (bs)</th>
+                                                                    <th>Estado</th>
+                                                                    <th>Banco</th>
+                                                                    <th>Planilla deposito</th>
+                                                                    <th>Observaciones</th>
+                                                                </tr>
+                                                            </thead>
+
+
+                                                            <tbody ng-repeat="recarga in recargas">
+                                                                <tr>
+                                                                    <td>{{recarga.fechaDeposito}}</td>
+                                                                    <td>{{recarga.fechaRegistro}}</td>
+                                                                    <td>{{recarga.concepto}}</td>
+                                                                    <td>{{recarga.periodo}}</td>
+                                                                    <td>{{recarga.usuario}}</td>
+                                                                    <td>{{recarga.monto}}</td>
+                                                                    <td>{{recarga.estado}}</td>
+                                                                    <td>{{recarga.banco}}</td>
+                                                                    <td>{{recarga.planilla}}</td>
+                                                                    <td>{{recarga.observaciones}}</td>
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <!-- /page content -->
+        </div>
+    </div>
+</div>
+<script>
+      $(document).ready(function() {
+        var handleDataTableButtons = function() {
+          if ($("#datatable-buttons").length) {
+            $("#datatable-buttons").DataTable({
+              dom: "Bfrtip",
+              buttons: [
+                {
+                  extend: "copy",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "csv",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "excel",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "pdfHtml5",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "print",
+                  className: "btn-sm"
+                },
+              ],
+              responsive: true
+            });
+          }
+        };
+
+        TableManageButtons = function() {
+          "use strict";
+          return {
+            init: function() {
+              handleDataTableButtons();
+            }
+          };
+        }();
+
+        TableManageButtons.init();
+      });
+</script>
+

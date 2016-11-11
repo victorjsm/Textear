@@ -1,0 +1,130 @@
+<div class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Grupo</h4>
+            </div>
+            <div class="modal-body">
+                
+                <div  id="abonados" class="table-responsive data-fields">
+                    <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
+                        <thead>
+                            <tr class="headings">
+                                <th>
+                                    <input type="checkbox" id="check-all" class="flat" 
+                                           ng-model="selectAll" 
+                                           ng-click="toggleAll(selectAll, selected, true)">
+                                </th>
+                                <th class="column-title">Nombre</th>
+                                <th class="column-title">Telefono</th>
+                                <th class="column-title">Cedula</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="abonado in ::abonados" class="even pointer">
+                                <td class="a-center ">
+                                    <input type="checkbox" class="flat" name="table_records"
+                                           ng-model="selected[abonado.ci]"
+                                           ng-click="addselect(abonado.ci,abonado,true)">
+                                </td>
+                                <td class="datos">{{ abonado.nombre }}</td>
+                                <td class="datos">{{ abonado.telefono }}</td>
+                                <td class="datos">{{ abonado.ci }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="abonado-section" class="table-responsive">
+                    <h4>Abonados <small> almacenados en al base de datos</small></h4>
+                    <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
+                        <thead>
+                            <tr class="headings">
+                                <th>
+                                    <input type="checkbox" id="check-all" class="flat" 
+                                           ng-model="selectAll" 
+                                           ng-click="toggleAll(selectAll, selected,false)">
+                                </th>
+                                <th class="column-title">Nombre</th>
+                                <th class="column-title">Telefono</th>
+                                <th class="column-title">Cedula</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="abonado in ::abonados2" class="even pointer">
+                                <td class="a-center ">
+                                    <input type="checkbox" class="flat" name="table_records"
+                                           ng-model="selected[abonado.ci]"
+                                           ng-click="addselect(abonado.ci,abonado,false)">
+                                </td>
+                                <td class="datos">{{ abonado.nombre }}</td>
+                                <td class="datos">{{ abonado.telefono }}</td>
+                                <td class="datos">{{ abonado.ci }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="fileContent2" class="table-responsive">
+                    <h4>Abonados <small> asegurese de que todos los abonados en el archivo esten en el sistema</small></h4>
+
+                    <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action">
+                        <thead>
+                            <tr class="headings">
+                                <th class="column-title">Nombre</th>
+                                <th class="column-title">Telefono</th>
+                                <th class="column-title">Cedula</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="file in ::fileContent" class="even pointer">
+                                <td>{{ file.Nombre }}</td>
+                                <td>{{ file.Telefono }}</td>
+                                <td>{{ file.CI }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <ul id="csvabonados">
+                    <li>
+                        <label id="csv-btn" class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                            <input type="file" file-reader="fileContent" ng-click="toggleNone()"  style="display:none"> Cargar CSV
+                        </label>                        
+                    </li>
+                </ul>
+                <button ng-if="selectOne" class="btn btn-primary" ng-click="close()">Eliminar</button>
+                <button id="agregarbtn" type="button" ng-click="agregando();toggleNone()" class="btn btn-primary">Agregar Abonados</button>
+                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#fileContent2").hide();
+        $("#titulo-preview").hide();
+        $("#abonado-section").hide();
+        $("#csvabonados").hide();
+        
+        $("#agregarbtn").click(function(){
+            $("#abonado-section").show();
+            $("#csvabonados").show();
+            $("#agregarbtn").hide();
+            $("#abonados").hide();
+            
+        });
+        
+        $("#csv-btn").click(function(){
+            $("#grupo-section").show();
+            $("#abonado-section").hide();
+            $("#fileContent2").show();
+            $("#titulo-preview").show();
+        });
+    });    
+</script>
