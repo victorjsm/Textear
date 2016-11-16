@@ -6,16 +6,13 @@
 package classes;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,98 +26,58 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MensajeRec.findAll", query = "SELECT m FROM MensajeRec m"),
-    @NamedQuery(name = "MensajeRec.findById", query = "SELECT m FROM MensajeRec m WHERE m.id = :id"),
+    @NamedQuery(name = "MensajeRec.findByAcronimo", query = "SELECT m FROM MensajeRec m WHERE m.mensajeRecPK.acronimo = :acronimo"),
+    @NamedQuery(name = "MensajeRec.findByClave", query = "SELECT m FROM MensajeRec m WHERE m.mensajeRecPK.clave = :clave"),
     @NamedQuery(name = "MensajeRec.findByCanal", query = "SELECT m FROM MensajeRec m WHERE m.canal = :canal"),
-    @NamedQuery(name = "MensajeRec.findByTelefonoEmisor", query = "SELECT m FROM MensajeRec m WHERE m.telefonoEmisor = :telefonoEmisor"),
-    @NamedQuery(name = "MensajeRec.findByTelefonoReceptor", query = "SELECT m FROM MensajeRec m WHERE m.telefonoReceptor = :telefonoReceptor"),
     @NamedQuery(name = "MensajeRec.findByMensaje", query = "SELECT m FROM MensajeRec m WHERE m.mensaje = :mensaje"),
-    @NamedQuery(name = "MensajeRec.findByBandeja", query = "SELECT m FROM MensajeRec m WHERE m.bandeja = :bandeja"),
-    @NamedQuery(name = "MensajeRec.findByFecha", query = "SELECT m FROM MensajeRec m WHERE m.fecha = :fecha")})
+    @NamedQuery(name = "MensajeRec.findByTelefono", query = "SELECT m FROM MensajeRec m WHERE m.mensajeRecPK.telefono = :telefono")})
 public class MensajeRec implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+    @EmbeddedId
+    protected MensajeRecPK mensajeRecPK;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "id")
-    private Integer id;
-    @Basic(optional = false)
-    @NotNull
+    @Size(min = 1, max = 20)
     @Column(name = "canal")
-    private int canal;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "telefono_emisor")
-    private String telefonoEmisor;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "telefono_receptor")
-    private String telefonoReceptor;
+    private String canal;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "mensaje")
     private String mensaje;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "bandeja")
-    private String bandeja;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "fecha")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecha;
 
     public MensajeRec() {
     }
 
-    public MensajeRec(Integer id) {
-        this.id = id;
+    public MensajeRec(MensajeRecPK mensajeRecPK) {
+        this.mensajeRecPK = mensajeRecPK;
     }
 
-    public MensajeRec(Integer id, int canal, String telefonoEmisor, String telefonoReceptor, String mensaje, String bandeja, Date fecha) {
-        this.id = id;
+    public MensajeRec(MensajeRecPK mensajeRecPK, String canal, String mensaje) {
+        this.mensajeRecPK = mensajeRecPK;
         this.canal = canal;
-        this.telefonoEmisor = telefonoEmisor;
-        this.telefonoReceptor = telefonoReceptor;
         this.mensaje = mensaje;
-        this.bandeja = bandeja;
-        this.fecha = fecha;
     }
 
-    public Integer getId() {
-        return id;
+    public MensajeRec(String acronimo, String clave, String telefono) {
+        this.mensajeRecPK = new MensajeRecPK(acronimo, clave, telefono);
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public MensajeRecPK getMensajeRecPK() {
+        return mensajeRecPK;
     }
 
-    public int getCanal() {
+    public void setMensajeRecPK(MensajeRecPK mensajeRecPK) {
+        this.mensajeRecPK = mensajeRecPK;
+    }
+
+    public String getCanal() {
         return canal;
     }
 
-    public void setCanal(int canal) {
+    public void setCanal(String canal) {
         this.canal = canal;
-    }
-
-    public String getTelefonoEmisor() {
-        return telefonoEmisor;
-    }
-
-    public void setTelefonoEmisor(String telefonoEmisor) {
-        this.telefonoEmisor = telefonoEmisor;
-    }
-
-    public String getTelefonoReceptor() {
-        return telefonoReceptor;
-    }
-
-    public void setTelefonoReceptor(String telefonoReceptor) {
-        this.telefonoReceptor = telefonoReceptor;
     }
 
     public String getMensaje() {
@@ -131,26 +88,10 @@ public class MensajeRec implements Serializable {
         this.mensaje = mensaje;
     }
 
-    public String getBandeja() {
-        return bandeja;
-    }
-
-    public void setBandeja(String bandeja) {
-        this.bandeja = bandeja;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (mensajeRecPK != null ? mensajeRecPK.hashCode() : 0);
         return hash;
     }
 
@@ -161,7 +102,7 @@ public class MensajeRec implements Serializable {
             return false;
         }
         MensajeRec other = (MensajeRec) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.mensajeRecPK == null && other.mensajeRecPK != null) || (this.mensajeRecPK != null && !this.mensajeRecPK.equals(other.mensajeRecPK))) {
             return false;
         }
         return true;
@@ -170,13 +111,9 @@ public class MensajeRec implements Serializable {
     @Override
     public String toString() {
         String salida = "{"
-                + "\"ID\":\"" + id + "\","
                 + "\"canal\":\"" + canal + "\","
-                + "\"Telefono_emisor\":\"" + telefonoEmisor + "\","
-                + "\"Telefono_receptor\":\"" + telefonoReceptor + "\","
-                + "\"Mensaje\":\"" + mensaje + "\","
-                + "\"Bandeja\":\"" + bandeja + "\","
-                + "\"Fecha\":\"" + fecha + "\""
+                + "\"mensaje\":\"" + mensaje + "\","
+                + mensajeRecPK.toString()
                 + "}";
         return salida;
     }

@@ -31,6 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empresa.findAll", query = "SELECT e FROM Empresa e")})
 public class Empresa implements Serializable {
 
+    @Size(max = 4)
+    @Column(name = "acronimo")
+    private String acronimo;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private List<Bandeja> bandejaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rifEmpresa")
@@ -199,6 +203,14 @@ public class Empresa implements Serializable {
 
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
+    }
+
+    public String getAcronimo() {
+        return acronimo;
+    }
+
+    public void setAcronimo(String acronimo) {
+        this.acronimo = acronimo;
     }
 
     

@@ -66,8 +66,7 @@ public class TInscripcion implements Serializable {
     @Column(name = "fecha_expiracion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaExpiracion;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Size(min = 1, max = 2147483647)
     @Column(name = "respuesta")
     private String respuesta;

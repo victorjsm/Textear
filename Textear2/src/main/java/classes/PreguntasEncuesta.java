@@ -40,6 +40,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PreguntasEncuesta.findByPregunta", query = "SELECT p FROM PreguntasEncuesta p WHERE p.pregunta = :pregunta")})
 public class PreguntasEncuesta implements Serializable {
 
+    @Size(max = 2147483647)
+    @Column(name = "respuesta")
+    private String respuesta;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "preguntasEncuesta", orphanRemoval=true)
     private Collection<OpcionesPregunta> opcionesPreguntaCollection;
 
@@ -120,6 +124,7 @@ public class PreguntasEncuesta implements Serializable {
     public String toString() {
         String salida = "{"
                 + preguntasEncuestaPK.toString() + ","
+                + "\"respuesta\":\"" + respuesta + "\","
                 + "\"pregunta\":\"" + pregunta + "\""
                 + "}";
         return salida;
@@ -132,6 +137,14 @@ public class PreguntasEncuesta implements Serializable {
 
     public void setOpcionesPreguntaCollection(Collection<OpcionesPregunta> opcionesPreguntaCollection) {
         this.opcionesPreguntaCollection = opcionesPreguntaCollection;
+    }
+
+    public String getRespuesta() {
+        return respuesta;
+    }
+
+    public void setRespuesta(String respuesta) {
+        this.respuesta = respuesta;
     }
     
 }

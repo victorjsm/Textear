@@ -156,6 +156,12 @@ public class GrupoFacadeREST extends AbstractFacade<Grupo> {
                 + "AND g.grupoPK.nombre = \"" + nombre + "\""
         );
         
+        for (int k = 0; k < temp.size(); k++) {
+
+            em.refresh(temp.get(k));
+        }
+        
+        
         // El procedimiento toString, me devuelve la informacion del abonado perteneciente al grupo
         // en formato JSON, lo concateno a una lista conservando el formato JSON deseado
         // de un arreglo y devuelvo la lista al front-end con todos los abonados pertenecientes

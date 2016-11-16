@@ -89,6 +89,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
             }
             emp.setRif(json2.getString("rif"));
             emp.setNombre(json2.getString("nombre"));
+            emp.setAcronimo(json2.getString("acronimo"));
             if (json2.has("pagina")) {
                 emp.setPaginaweb(json2.getString("pagina"));
             }
@@ -202,6 +203,11 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
         List<Usuario> temp = super.findWithQuery(
                 "SELECT u FROM Usuario u WHERE u.rifEmpresa.rif = \"" + rif + "\" AND"
                 + " u.tipo != 'cliente'");
+        
+        for (int k = 0; k < temp.size(); k++) {
+
+            em.refresh(temp.get(k));
+        }
 
         // Se vuelve un arreglo de STRINGS con formato JSON y se envia nuevamente al front-end.
         String json = List_to_JSONString(temp);
@@ -241,6 +247,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
             for (int i = 0; i < lista.size(); i++) {
 
                 Usuario user = lista.get(i);
+                em.refresh(user);
                 JSONObject temp = new JSONObject(user.toString());
                 lista2 = super.findWithQuery("SELECT u FROM Usuario u WHERE u.rifEmpresa.rif = \"" + user.getRifEmpresa() + "\"");
                 arreglo2 = new JSONArray();

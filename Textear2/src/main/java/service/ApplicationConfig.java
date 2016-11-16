@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.CanalFacadeREST.class);
         resources.add(service.EmpresaFacadeREST.class);
         resources.add(service.GrupoFacadeREST.class);
+        resources.add(service.MensajeEnvFacadeREST.class);
         resources.add(service.MensajeRecFacadeREST.class);
         resources.add(service.PrecioCanalPrefijoFacadeREST.class);
         resources.add(service.PrefijoFacadeREST.class);

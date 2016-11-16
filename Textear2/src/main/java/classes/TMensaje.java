@@ -41,8 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TMensaje.findByFechaCreacion", query = "SELECT t FROM TMensaje t WHERE t.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "TMensaje.findByFechaExpiracion", query = "SELECT t FROM TMensaje t WHERE t.fechaExpiracion = :fechaExpiracion"),
     @NamedQuery(name = "TMensaje.findByMensaje", query = "SELECT t FROM TMensaje t WHERE t.mensaje = :mensaje"),
-    @NamedQuery(name = "TMensaje.findByBandeja", query = "SELECT t FROM TMensaje t WHERE t.bandeja = :bandeja"),
-    @NamedQuery(name = "TMensaje.findByPrecioTotal", query = "SELECT t FROM TMensaje t WHERE t.precioTotal = :precioTotal")})
+    @NamedQuery(name = "TMensaje.findByBandeja", query = "SELECT t FROM TMensaje t WHERE t.bandeja = :bandeja")})
 public class TMensaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -78,11 +77,6 @@ public class TMensaje implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "bandeja")
     private String bandeja;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "precio_total")
-    private BigDecimal precioTotal;
     @JoinColumns({
         @JoinColumn(name = "telefono", referencedColumnName = "telefono", insertable = false, updatable = false),
         @JoinColumn(name = "rif_empresa", referencedColumnName = "rif_empresa", insertable = false, updatable = false)})
@@ -107,7 +101,6 @@ public class TMensaje implements Serializable {
         this.fechaExpiracion = fechaExpiracion;
         this.mensaje = mensaje;
         this.bandeja = bandeja;
-        this.precioTotal = precioTotal;
     }
 
     public TMensaje(String rifEmpresa, String telefono, String nombre) {
@@ -170,14 +163,6 @@ public class TMensaje implements Serializable {
         this.bandeja = bandeja;
     }
 
-    public BigDecimal getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(BigDecimal precioTotal) {
-        this.precioTotal = precioTotal;
-    }
-
     public Abonado getAbonado() {
         return abonado;
     }
@@ -218,7 +203,6 @@ public class TMensaje implements Serializable {
     public String toString() {
         String salida = "{"
                 + tMensajePK.toString() + ","
-                + "\"precio\":" + precioTotal + "\","
                 + "\"canal\":\"" + codigoCanal.toString() + "\","
                 + "\"abonado\":\"" + abonado.toString() + "\","
                 + "\"estado\":\"" + estado + "\","

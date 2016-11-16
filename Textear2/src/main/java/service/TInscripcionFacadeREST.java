@@ -122,6 +122,8 @@ public class TInscripcionFacadeREST extends AbstractFacade<TInscripcion> {
                         "SELECT t FROM TInscripcion t WHERE t.tInscripcionPK.nombre = \"" + lista.get(i).toString() + "\"");
 
                 for (int k = 0; k < temp.size(); k++) {
+                    
+                    em.refresh(temp.get(k));
 
                     abonado = new JSONObject();
 
@@ -380,8 +382,6 @@ public class TInscripcionFacadeREST extends AbstractFacade<TInscripcion> {
                     tins.setFechaExpiracion(expiro);
                     tins.setFechaEnvio(envio);
                     tins.setTInscripcionPK(tinspk);
-
-                    tins.setRespuesta(men.getString("respuesta"));
                     
                     tins.setAbonado(abo);
 
@@ -398,8 +398,6 @@ public class TInscripcionFacadeREST extends AbstractFacade<TInscripcion> {
                     tins.setFechaExpiracion(expiro);
                     tins.setFechaEnvio(envio);
                     tins.setTInscripcionPK(tinspk);
-
-                    tins.setRespuesta(men.getString("respuesta"));
                     
                     super.edit(tins);
                 }

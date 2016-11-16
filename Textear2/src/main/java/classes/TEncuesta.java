@@ -46,9 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TEncuesta.findByFechaExpiracion", query = "SELECT t FROM TEncuesta t WHERE t.fechaExpiracion = :fechaExpiracion"),
     @NamedQuery(name = "TEncuesta.findByBienvenida", query = "SELECT t FROM TEncuesta t WHERE t.bienvenida = :bienvenida"),
     @NamedQuery(name = "TEncuesta.findByAyuda", query = "SELECT t FROM TEncuesta t WHERE t.ayuda = :ayuda"),
-    @NamedQuery(name = "TEncuesta.findByRespuesta", query = "SELECT t FROM TEncuesta t WHERE t.respuesta = :respuesta"),
-    @NamedQuery(name = "TEncuesta.findByBandeja", query = "SELECT t FROM TEncuesta t WHERE t.bandeja = :bandeja"),
-    @NamedQuery(name = "TEncuesta.findByPrecioTotal", query = "SELECT t FROM TEncuesta t WHERE t.precioTotal = :precioTotal")})
+    @NamedQuery(name = "TEncuesta.findByBandeja", query = "SELECT t FROM TEncuesta t WHERE t.bandeja = :bandeja")})
 public class TEncuesta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -86,19 +84,9 @@ public class TEncuesta implements Serializable {
     private String ayuda;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2147483647)
-    @Column(name = "respuesta")
-    private String respuesta;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "bandeja")
     private String bandeja;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "precio_total")
-    private BigDecimal precioTotal;
     @JoinColumns({
         @JoinColumn(name = "telefono", referencedColumnName = "telefono", insertable = false, updatable = false),
         @JoinColumn(name = "rif_empresa", referencedColumnName = "rif_empresa", insertable = false, updatable = false)})
@@ -117,7 +105,7 @@ public class TEncuesta implements Serializable {
         this.tEncuestaPK = tEncuestaPK;
     }
 
-    public TEncuesta(TEncuestaPK tEncuestaPK, String estado, Date fechaEnvio, Date fechaCreacion, Date fechaExpiracion, String bienvenida, String ayuda, String respuesta, String bandeja, BigDecimal precioTotal) {
+    public TEncuesta(TEncuestaPK tEncuestaPK, String estado, Date fechaEnvio, Date fechaCreacion, Date fechaExpiracion, String bienvenida, String ayuda, String respuesta, String bandeja) {
         this.tEncuestaPK = tEncuestaPK;
         this.estado = estado;
         this.fechaEnvio = fechaEnvio;
@@ -125,9 +113,7 @@ public class TEncuesta implements Serializable {
         this.fechaExpiracion = fechaExpiracion;
         this.bienvenida = bienvenida;
         this.ayuda = ayuda;
-        this.respuesta = respuesta;
         this.bandeja = bandeja;
-        this.precioTotal = precioTotal;
     }
 
     public TEncuesta(String rifEmpresa, String ci, String nombre) {
@@ -190,28 +176,12 @@ public class TEncuesta implements Serializable {
         this.ayuda = ayuda;
     }
 
-    public String getRespuesta() {
-        return respuesta;
-    }
-
-    public void setRespuesta(String respuesta) {
-        this.respuesta = respuesta;
-    }
-
     public String getBandeja() {
         return bandeja;
     }
 
     public void setBandeja(String bandeja) {
         this.bandeja = bandeja;
-    }
-
-    public BigDecimal getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(BigDecimal precioTotal) {
-        this.precioTotal = precioTotal;
     }
 
     public Abonado getAbonado() {
@@ -263,7 +233,6 @@ public class TEncuesta implements Serializable {
     public String toString() {
         String salida = "{"
                 + tEncuestaPK.toString() + ","
-                + "\"precio\":" + precioTotal + "\","
                 + "\"canal\":\"" + codigoCanal.toString() + "\","
                 + "\"abonado\":\"" + abonado.toString() + "\","
                 + "\"estado\":\"" + estado + "\","
@@ -272,7 +241,6 @@ public class TEncuesta implements Serializable {
                 + "\"fechaExpiracion\":\"" + fechaExpiracion + "\","
                 + "\"bandeja\":\"" + bandeja + "\","
                 + "\"ayuda\":\"" + ayuda + "\","
-                + "\"respuesta\":\"" + respuesta + "\","
                 + "\"bienvenida\":\"" + bienvenida + "\""
                 + "}";
         return salida;

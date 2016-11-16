@@ -177,7 +177,6 @@ public class AbonadoFacadeREST extends AbstractFacade<Abonado> {
         JSONObject json;
         JSONObject token = new JSONObject();
         JSONObject cont = new JSONObject();
-        System.out.println(temp);
 
         try {
 
@@ -242,6 +241,11 @@ public class AbonadoFacadeREST extends AbstractFacade<Abonado> {
         List<Abonado> temp = super.findWithQuery(
                 "SELECT a FROM Abonado a WHERE a.abonadoPK.rifEmpresa = \"" + rif + "\" "
                 + "AND a.negra = false");
+        
+        for (int k = 0; k < temp.size(); k++) {
+
+            em.refresh(temp.get(k));
+        }
 
         // Se vuelve un arreglo de STRINGS con formato JSON y se envia nuevamente al front-end.
         String json = List_to_JSONString(temp);
@@ -328,6 +332,110 @@ public class AbonadoFacadeREST extends AbstractFacade<Abonado> {
     @Path("listanegraGET/{rif}")
     @Produces({MediaType.APPLICATION_JSON})
     public String find_lista(@PathParam("rif") String rif) {
+
+        // Se utiliza un query asoaciado al entitymanager para obtener todos
+        // los abonados asociados a ese RIF en particular
+        List<Abonado> temp = super.findWithQuery(
+                "SELECT a FROM Abonado a WHERE a.abonadoPK.rifEmpresa = \"" + rif + "\" "
+                + "AND a.negra = true");
+
+        // Se vuelve un arreglo de STRINGS con formato JSON y se envia nuevamente al front-end.
+        String json = List_to_JSONString(temp);
+        return json;
+    }
+
+    // BANEAR ABONADO
+    // Procedimiento por el cual el REST recibe informacion de uno o mas abonados 
+    // y los cambia a lista negra en la base de datos.
+    // El REST recibe una llamada POST con un JSON que sera comsumido para obtener la informacion deseada.
+    // Si alguno de lso abonados no existe en la base de datos la llamada
+    // termina y se envia un error al front-end
+    @POST
+    @Path("/abonadosNEGRA")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String ban_abonados(String temp) {
+
+        // falla. Booleano usado para determinar si el procedimineto fue
+        // exitoso o no.
+        // json. Contiene la informacion enviada desde el front-end para crear 
+        // el nuevo abonado.
+        // token, sera la respuesta de la llamada. Con esta variable
+        // nos comunicamos con el Front-End para informar si se realizo exitosamente
+        // el procedimiento.
+        // cont. Contiene el contenido que llevara token. Esto incluye el dia en el
+        // que se realizo el procedimiento, un booleano si se realizo exitosamente
+        // o no y un mensaje de exito o falla dependiendo del resultado.
+        Boolean falla = false;
+        JSONObject json;
+        JSONObject token = new JSONObject();
+        JSONObject cont = new JSONObject();
+
+        try {
+            // Se obtiene el JSON con el arreglo conteniendo todos los abonados a eliminar
+            json = new JSONObject(temp);
+            JSONArray arreglo = json.getJSONArray("arreglo");
+
+            // Fecha del dia actual, para el LOG y para el mensaje de respuesta al front-end
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = new Date();
+
+            // Ciclo atravez de cada elemento que se desea eliminar, se obtiene el key de cada
+            // abonado, se busca en la base de datos y se elimina.
+            // Si no se encuentra algun abonado, la llamada falla y se envia mensaje de error,
+            // al front-end
+            for (int i = 0; i < arreglo.length(); ++i) {
+                json = arreglo.getJSONObject(i);
+                // Se crea el objeto llave de la clase abonados, y se intenta encontrar el
+                // abonado que se desea editar, si no se encuentra ocurre una falla y se 
+                // reporta al front-end
+                AbonadoPK abopk = new AbonadoPK();
+
+                abopk.setRifEmpresa(json.getString("rifEmpresa"));
+                abopk.setTelefono(json.getString("telefono"));
+
+                if (super.find(abopk) == null) {
+                    cont.put("mensaje", "El abonado a editar ya no existe, actualize la pagina");
+                    falla = true;
+
+                    // Si se encuentra, se edita la informacion del mismo y se guarda nuevamente
+                    // en la base de datos.
+                } else {
+
+                    Abonado prueba = super.find(abopk);
+                    prueba.setNombre(json.getString("nombre"));
+                    prueba.setCi(json.getString("ci"));
+                    prueba.setNegra(json.getBoolean("negra"));
+
+                    super.edit(prueba);
+                }
+            }
+
+            // Se crea el mensaje de respuesta y posteriormente se envia
+            cont.put("Logtime", dateFormat.format(date));
+            cont.put("falla", falla);
+            if (!falla) {
+                cont.put("mensaje", "Se envio al abonado a la lista negra exitosamente");
+            }
+
+            token.put("token", cont);
+
+            return token.toString();
+
+        } catch (JSONException ex) {
+            return "{\"token\":{\"mensaje\":\"No se pudo eliminar abonado\",\"falla\":true}}";
+//            java.util.logging.Logger.getLogger(WebController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // OBTENER ABONADOS LISTA NEGRA
+    // Procedimiento por el cual el REST recibe el RIF de una empresa en particular,
+    // y retorna todos los abonados en lista negra asociados a esa empresa.
+    // El REST recibe el rif via una llamada GET
+    @GET
+    @Path("abonadosNegraGET/{rif}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String find_abonadosNegra(@PathParam("rif") String rif) {
 
         // Se utiliza un query asoaciado al entitymanager para obtener todos
         // los abonados asociados a ese RIF en particular

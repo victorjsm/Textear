@@ -33,8 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Abonado.findAll", query = "SELECT a FROM Abonado a")})
 public class Abonado implements Serializable {
 
-    @Column(name = "negra")
-    private Boolean negra;
+    
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "abonado")
     private Collection<TSistema> tSistemaCollection;
@@ -64,6 +63,9 @@ public class Abonado implements Serializable {
     @Size(min = 1, max = 25)
     @Column(name = "ci", nullable = false, length = 25)
     private String ci;
+    @Column(name = "negra")
+    private Boolean negra;
+    
 
     public Abonado() {
     }

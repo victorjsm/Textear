@@ -44,7 +44,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TConsulta.findByAyuda", query = "SELECT t FROM TConsulta t WHERE t.ayuda = :ayuda"),
     @NamedQuery(name = "TConsulta.findByRespuesta", query = "SELECT t FROM TConsulta t WHERE t.respuesta = :respuesta"),
     @NamedQuery(name = "TConsulta.findByBandeja", query = "SELECT t FROM TConsulta t WHERE t.bandeja = :bandeja"),
-    @NamedQuery(name = "TConsulta.findByPrecioTotal", query = "SELECT t FROM TConsulta t WHERE t.precioTotal = :precioTotal"),
     @NamedQuery(name = "TConsulta.findByPregunta", query = "SELECT t FROM TConsulta t WHERE t.pregunta = :pregunta")})
 public class TConsulta implements Serializable {
 
@@ -81,8 +80,7 @@ public class TConsulta implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "ayuda")
     private String ayuda;
-    @Basic(optional = false)
-    @NotNull
+    @Basic(optional = true)
     @Size(min = 1, max = 2147483647)
     @Column(name = "respuesta")
     private String respuesta;
@@ -91,11 +89,6 @@ public class TConsulta implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "bandeja")
     private String bandeja;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "precio_total")
-    private BigDecimal precioTotal;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -117,7 +110,7 @@ public class TConsulta implements Serializable {
         this.tConsultaPK = tConsultaPK;
     }
 
-    public TConsulta(TConsultaPK tConsultaPK, String estado, Date fechaEnvio, Date fechaCreacion, Date fechaExpiracion, String bienvenida, String ayuda, String respuesta, String bandeja, BigDecimal precioTotal, String pregunta) {
+    public TConsulta(TConsultaPK tConsultaPK, String estado, Date fechaEnvio, Date fechaCreacion, Date fechaExpiracion, String bienvenida, String ayuda, String respuesta, String bandeja, String pregunta) {
         this.tConsultaPK = tConsultaPK;
         this.estado = estado;
         this.fechaEnvio = fechaEnvio;
@@ -127,7 +120,6 @@ public class TConsulta implements Serializable {
         this.ayuda = ayuda;
         this.respuesta = respuesta;
         this.bandeja = bandeja;
-        this.precioTotal = precioTotal;
         this.pregunta = pregunta;
     }
 
@@ -207,14 +199,6 @@ public class TConsulta implements Serializable {
         this.bandeja = bandeja;
     }
 
-    public BigDecimal getPrecioTotal() {
-        return precioTotal;
-    }
-
-    public void setPrecioTotal(BigDecimal precioTotal) {
-        this.precioTotal = precioTotal;
-    }
-
     public String getPregunta() {
         return pregunta;
     }
@@ -263,7 +247,6 @@ public class TConsulta implements Serializable {
     public String toString() {
         String salida = "{"
                 + tConsultaPK.toString() + ","
-                + "\"precio\":" + precioTotal + "\","
                 + "\"canal\":\"" + codigoCanal.toString() + "\","
                 + "\"abonado\":\"" + abonado.toString() + "\","
                 + "\"estado\":\"" + estado + "\","

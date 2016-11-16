@@ -72,12 +72,11 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
     public TConsultaFacadeREST() {
         super(TConsulta.class);
     }
-    
+
     // GET Tarea Consulta
     // Procedimiento por el cual el REST recibe el rif de la empresa a travez de
     // una llamada GET y con el devuelve todas las tareas de consulta asociadas 
     // a ese rif en un arreglo JSON.
-
     @GET
     @Path("/TconsultaGET/{rif}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -90,26 +89,23 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
         //      de cada tarea.
         // tareas. Array JSON que contendra las tareas relacionadas con el rif enviado.
         // abonados. Array JSON que contendra los abonados destinatarios de cada tarea
-        
         JSONObject tarea, canal, abonado;
         JSONArray tareas, abonados;
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            
+
             // Se ejecuta un QUERY para encontrar todos los nombre de tarea existentes
             // asociados al rif.
-
             List lista = em.createNativeQuery("SELECT DISTINCT Nombre FROM t_consulta WHERE "
                     + "RIF_Empresa = \'" + rif + "\' ").getResultList();
 
             tareas = new JSONArray();
-            
+
             // Por cada nombre en la lista se busca todas las entradas en la base de datos respectivas
             // a ese nombre.
             // Se toma la informacion asociada a la tarea en el primer ciclo y
             // se va tomando la informacion de cada abonado destinatario, cuando se tienen todos,
             // se agrega al objeto tarea la lista de abonados.
-
             for (int i = 0; i < lista.size(); i++) {
 
                 tarea = new JSONObject();
@@ -120,7 +116,8 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
                         "SELECT t FROM TConsulta t WHERE t.tConsultaPK.nombre = \"" + lista.get(i).toString() + "\"");
 
                 for (int k = 0; k < temp.size(); k++) {
-
+                    em.refresh(temp.get(k));
+                    
                     abonado = new JSONObject();
 
                     if (k == 0) {
@@ -131,7 +128,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
                         tarea.put("bienvenida", temp.get(k).getBienvenida());
                         tarea.put("ayuda", temp.get(k).getAyuda());
                         tarea.put("respuesta", temp.get(k).getRespuesta());
-                        tarea.put("precio", temp.get(k).getPrecioTotal());
                         tarea.put("fechaCreacion", dateFormat.format(temp.get(k).getFechaCreacion()));
                         tarea.put("fechaExpiracion", dateFormat.format(temp.get(k).getFechaExpiracion()));
                         tarea.put("fechaEnvio", dateFormat.format(temp.get(k).getFechaEnvio()));
@@ -156,18 +152,17 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
             //            java.util.logging.Logger.getLogger(WebController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     // CREATE Tarea Consulta
     // Procedimiento por el cual el REST recibe la informacion de una tarea nueva
     // mediante un JSON y la crea en base de datos. Finalmente envia el resultado
     // de la operacion en un json respuesta.
-    
     @POST
     @Path("/tconsultaPOST")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String createtconsulta(String temp) throws ParseException, JSONException {
-        
+
         // obj. Objeto JSON que contendra la informacion enviada desde el front.
         // json. Objeto JSON variable que contendra informacion de cada abonado
         //      destinatario de la consulta.
@@ -180,7 +175,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
         // mensaje. String con el mensaje de respuesta al servicio front con el resultado
         //      del procedimiento.
         // falla. Boolean que informa al front si hubo alfun error durante el procedimiento.
-        
         JSONObject json, obj, canal, men;
         JSONObject token = new JSONObject();
         JSONObject cont = new JSONObject();
@@ -188,14 +182,12 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
         Boolean falla = false;
 
         try {
-            
+
             // Primero se obtiene la informacion enviada desde el front. Que
             // incluye toda la informacion necesaria de la tarea a crear. Al mismo
             // tiempo se coloca la fecha actual de creacion del objeto por control.
-            
             // Luego se crea un objeto Canal por el cual se transmite la tarea y se
             // le asignan sus datos respectivos.
-            
             obj = new JSONObject(temp);
 
             JSONArray arreglo = obj.getJSONArray("arreglo");
@@ -220,10 +212,8 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
             // Por cada destinatario se crea una tarea asociada, se toma la informacion
             // proveniente del front y se va creando uno a uno con el estado de
             // pendiente.
-            
             // Si existe ya una tarea con la misma llave, asociada al mismo abonado
             // se genera un mensaje de error y se interrumpe la rutina.
-            
             for (int i = 0; i < arreglo.length(); ++i) {
                 json = arreglo.getJSONObject(i);
 
@@ -260,8 +250,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
                 tcon.setPregunta(men.getString("pregunta"));
                 tcon.setAbonado(abo);
 
-                tcon.setPrecioTotal(BigDecimal.valueOf(40.5));
-
                 if (super.find(tconpk) == null) {
                     super.create(tcon);
                 } else {
@@ -273,7 +261,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
 
             // Finalmente se crea el mensaje de respuesta al servicio front y
             // se envia el resultado del procedimiento.
-            
             cont.put("mensaje", mensaje);
             cont.put("falla", falla);
             cont.put("Logtime", today);
@@ -286,20 +273,17 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
 //            java.util.logging.Logger.getLogger(WebController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     // EDIT Tarea Consulta
     // Procedimiento por el cual el REST recibe la informacion actualizada de una tarea
     // existente mediante un JSON y la actualiza en base de datos. Finalmente envia el resultado
     // de la operacion en un json respuesta.
-    
-    
     @POST
     @Path("/tconsultaEditPOST")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String edittconsulta(String temp) throws ParseException, JSONException {
-        
+
         // obj. Objeto JSON que contendra la informacion enviada desde el front.
         // json. Objeto JSON variable que contendra informacion de cada abonado
         //      destinatario de la consulta.
@@ -312,8 +296,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
         // mensaje. String con el mensaje de respuesta al servicio front con el resultado
         //      del procedimiento.
         // falla. Boolean que informa al front si hubo alfun error durante el procedimiento.
-        
-        
         JSONObject json, obj, canal, men;
         JSONObject token = new JSONObject();
         JSONObject cont = new JSONObject();
@@ -321,18 +303,16 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
         Boolean falla = false;
 
         try {
-            
+
             // Primero se obtiene la informacion enviada desde el front. Que
             // incluye toda la informacion necesaria de la tarea a crear. Al mismo
             // tiempo se coloca la fecha actual de creacion del objeto por control.
-            
             // Luego se crea un objeto Canal por el cual se transmite la tarea y se
             // le asignan sus datos respectivos.
-            
             obj = new JSONObject(temp);
 
             JSONArray arreglo = obj.getJSONArray("arreglo");
-        
+
             men = obj.getJSONObject("mensaje");
             canal = men.getJSONObject("canal");
 
@@ -354,7 +334,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
             // conseguir una tarea asociada en la base de datos, si no existe, se crea
             // una nueva, si existe se edita la informacion antigua con la nueva y se
             // guarda la informacion
-            
             for (int i = 0; i < arreglo.length(); ++i) {
 
                 json = arreglo.getJSONObject(i);
@@ -390,13 +369,11 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
 
                     tcon.setBienvenida(men.getString("bienvenida"));
                     tcon.setAyuda(men.getString("ayuda"));
-                    tcon.setRespuesta(men.getString("respuesta"));
                     tcon.setPregunta(men.getString("pregunta"));
 
                     tcon.setAbonado(abo);
 
-                    tcon.setPrecioTotal(BigDecimal.valueOf(40.5));
-
+                    
                     super.create(tcon);
                 } else {
 
@@ -413,7 +390,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
 
                     tcon.setBienvenida(men.getString("bienvenida"));
                     tcon.setAyuda(men.getString("ayuda"));
-                    tcon.setRespuesta(men.getString("respuesta"));
                     tcon.setPregunta(men.getString("pregunta"));
 
                     super.edit(tcon);
@@ -422,7 +398,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
 
             // Finalmente se crea el mensaje de respuesta al servicio front y
             // se envia el resultado del procedimiento.
-            
             cont.put("mensaje", mensaje);
             cont.put("falla", falla);
             cont.put("Logtime", today);
@@ -435,18 +410,17 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
 //            java.util.logging.Logger.getLogger(WebController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     // ELIMINAR Tarea Consulta
     // Procedimiento por el cual el REST recibe la informacion de una tarea que se
     // desea eliminar, busca las entidades necesarias en la base de datos y las elimina.
     // Si no existe semejante entidad produce un error y envia un mensaje al front-end.
-
     @POST
     @Path("/tconsultaElimPOST")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String eliminartconsulta(String temp) throws JSONException, ParseException {
-        
+
         // obj. Objeto JSON que contendra la informacion enviada desde el front.
         // json. Objeto JSON variable que contendra informacion de cada abonado
         //      destinatario de la consulta.
@@ -459,8 +433,6 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
         // mensaje. String con el mensaje de respuesta al servicio front con el resultado
         //      del procedimiento.
         // falla. Boolean que informa al front si hubo alfun error durante el procedimiento.
-        
-        
         JSONObject json, obj, men;
         JSONArray tareas;
         JSONObject token = new JSONObject();
@@ -473,13 +445,12 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
             // Primero se obtiene la informacion enviada desde el front. Que
             // incluye toda la informacion necesaria de la tarea a crear. Al mismo
             // tiempo se coloca la fecha actual de creacion del objeto por control.
-            
             obj = new JSONObject(temp);
             tareas = obj.getJSONArray("tareas");
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date today = new Date();
             today = dateFormat.parse(dateFormat.format(today));
-            
+
             // Por cada una de las tareas enviadas a eliminar, se obtiene la informacion
             // de todos los destinatarios y la informacion del mensaje como tal.
             for (int i = 0; i < tareas.length(); ++i) {
@@ -488,11 +459,10 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
                 JSONArray arreglo = tarea.getJSONArray("arreglo");
 
                 men = tarea.getJSONObject("mensaje");
-                
+
                 // Luego por cada destinatario se crea un objeto dummy que nos servira para
                 // la busqueda, si se consigue el elemento se elimina, si no se produce
                 // un error que luego sera enviado al front-end.
-
                 for (int j = 0; j < arreglo.length(); ++j) {
                     json = arreglo.getJSONObject(j);
 
@@ -511,10 +481,9 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
                     }
                 }
             }
-            
+
             // Se crea el objeto de respuesta, con el mensaje y con la fecha
             // actual y se envia al front-end.
-            
             cont.put("mensaje", mensaje);
             cont.put("falla", falla);
             cont.put("Logtime", today);
@@ -527,11 +496,10 @@ public class TConsultaFacadeREST extends AbstractFacade<TConsulta> {
 //            java.util.logging.Logger.getLogger(WebController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

@@ -77,6 +77,9 @@ public class BandejaFacadeREST extends AbstractFacade<Bandeja> {
         // y se envia al front-end
         List<Bandeja> temp = super.findWithQuery(
                 "SELECT b FROM Bandeja b WHERE b.bandejaPK.rifEmpresa = \""+ rif + "\" AND  b.tipo = \"" + tipo + "\"");
+        for (int k = 0; k < temp.size(); k++) {
+            em.refresh(temp.get(k));
+        }
         String json = List_to_JSONString(temp);
         return json;
     }

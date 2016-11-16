@@ -121,6 +121,8 @@ public class TSistemaFacadeREST extends AbstractFacade<TSistema> {
                         "SELECT t FROM TSistema t WHERE t.tSistemaPK.nombre = \"" + lista.get(i).toString() + "\"");
 
                 for (int k = 0; k < temp.size(); k++) {
+                    
+                    em.refresh(temp.get(k));
 
                     abonado = new JSONObject();
 

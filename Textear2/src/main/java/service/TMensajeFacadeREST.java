@@ -82,7 +82,7 @@ public class TMensajeFacadeREST extends AbstractFacade<TMensaje> {
     @Path("/tmensajeGET/{rif}")
     @Produces({MediaType.APPLICATION_JSON})
     public String find_mensaje(@PathParam("rif") String rif) {
-
+        
         
         // tarea. Objeto JSON destinado a guardar la informacion de cada tarea para
         //      despues ser llevado al arreglo de respuesta.
@@ -116,6 +116,8 @@ public class TMensajeFacadeREST extends AbstractFacade<TMensaje> {
                         "SELECT t FROM TMensaje t WHERE t.tMensajePK.nombre = \"" + lista.get(i).toString() + "\"");
 
                 for (int k = 0; k < temp.size(); k++) {
+                    
+                    em.refresh(temp.get(k));
 
                     abonado = new JSONObject();
 
@@ -125,7 +127,6 @@ public class TMensajeFacadeREST extends AbstractFacade<TMensaje> {
                         tarea.put("nombre", temp.get(k).getTMensajePK().getNombre());
                         tarea.put("bandeja", temp.get(k).getBandeja());
                         tarea.put("mensaje", temp.get(k).getMensaje());
-                        tarea.put("precio", temp.get(k).getPrecioTotal());
                         tarea.put("fechaCreacion", dateFormat.format(temp.get(k).getFechaCreacion()));
                         tarea.put("fechaExpiracion", dateFormat.format(temp.get(k).getFechaExpiracion()));
                         tarea.put("fechaEnvio", dateFormat.format(temp.get(k).getFechaEnvio()));
@@ -253,7 +254,6 @@ public class TMensajeFacadeREST extends AbstractFacade<TMensaje> {
                 tmen.setMensaje(men.getString("mensaje"));
                 tmen.setAbonado(abo);
 
-                tmen.setPrecioTotal(BigDecimal.valueOf(40.5));
 
                 if (super.find(tmenpk) == null) {
                     super.create(tmen);
@@ -380,8 +380,6 @@ public class TMensajeFacadeREST extends AbstractFacade<TMensaje> {
 
                     tmen.setMensaje(men.getString("mensaje"));
                     tmen.setAbonado(abo);
-
-                    tmen.setPrecioTotal(BigDecimal.valueOf(40.5));
 
                     super.create(tmen);
                 } else {

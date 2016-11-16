@@ -58,6 +58,10 @@ public class CanalFacadeREST extends AbstractFacade<Canal> {
         // Se consiguen todos los canales, se vuelven un string con formato JSON,
         // y se envia al front-end
         List<Canal> temp = super.findWithQuery("SELECT c FROM Canal c");
+        for (int k = 0; k < temp.size(); k++) {
+
+            em.refresh(temp.get(k));
+        }
         String json = List_to_JSONString(temp);
         return json;
     }

@@ -132,6 +132,8 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
                         "SELECT t FROM TEncuesta t WHERE t.tEncuestaPK.nombre = \"" + lista.get(i).toString() + "\"");
 
                 for (int k = 0; k < temp.size(); k++) {
+                    
+                    em.refresh(temp.get(k));
 
                     abonado = new JSONObject();
 
@@ -142,8 +144,6 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
                         tarea.put("bandeja", temp.get(k).getBandeja());
                         tarea.put("bienvenida", temp.get(k).getBienvenida());
                         tarea.put("ayuda", temp.get(k).getAyuda());
-                        tarea.put("respuesta", temp.get(k).getRespuesta());
-                        tarea.put("precio", temp.get(k).getPrecioTotal());
                         tarea.put("fechaCreacion", dateFormat.format(temp.get(k).getFechaCreacion()));
                         tarea.put("fechaExpiracion", dateFormat.format(temp.get(k).getFechaExpiracion()));
                         tarea.put("fechaEnvio", dateFormat.format(temp.get(k).getFechaEnvio()));
@@ -292,10 +292,7 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
 
                 tenc.setBienvenida(men.getString("bienvenida"));
                 tenc.setAyuda(men.getString("ayuda"));
-                tenc.setRespuesta(men.getString("respuesta"));
                 tenc.setAbonado(abo);
-
-                tenc.setPrecioTotal(BigDecimal.valueOf(40.5));
 
                 JSONArray jsonPreguntas = men.getJSONArray("preguntas");
 
@@ -320,6 +317,7 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
                     preguntaPK.setTRif(json.getString("rif"));
 
                     pregunta.setPregunta(json2.getString("pregunta"));
+                    pregunta.setRespuesta("");
                     pregunta.setPreguntasEncuestaPK(preguntaPK);
 
                     JSONArray jsonOpciones = json2.getJSONArray("opciones");
@@ -471,8 +469,14 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
                     //------ DATOS DE LA TAREA
                     tmen.setBandeja(men.getString("bandeja"));
                     tmen.setCodigoCanal(can);
+                    
+                    if (men.has("estado")){
+                        tmen.setEstado(men.getString("estado"));
+                    } else {
+                        tmen.setEstado("PENDIENTE");
+                    }
 
-                    tmen.setEstado("PENDIENTE");
+                    
 
                     tmen.setFechaCreacion(today);
                     tmen.setFechaExpiracion(expiro);
@@ -481,11 +485,9 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
 
                     tmen.setBienvenida(men.getString("bienvenida"));
                     tmen.setAyuda(men.getString("ayuda"));
-                    tmen.setRespuesta(men.getString("respuesta"));
 
                     tmen.setAbonado(abo);
 
-                    tmen.setPrecioTotal(BigDecimal.valueOf(40.5));
 
                     JSONArray jsonPreguntas = men.getJSONArray("preguntas");
 
@@ -542,7 +544,11 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
                     tmen.setBandeja(men.getString("bandeja"));
                     tmen.setCodigoCanal(can);
 
-                    tmen.setEstado("PENDIENTE");
+                    if (men.has("estado")){
+                        tmen.setEstado(men.getString("estado"));
+                    } else {
+                        tmen.setEstado("PENDIENTE");
+                    }
 
                     tmen.setFechaExpiracion(expiro);
                     tmen.setFechaEnvio(envio);
@@ -550,7 +556,6 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
 
                     tmen.setBienvenida(men.getString("bienvenida"));
                     tmen.setAyuda(men.getString("ayuda"));
-                    tmen.setRespuesta(men.getString("respuesta"));
                     
                     JSONArray jsonPreguntas = men.getJSONArray("preguntas");
                    
@@ -587,7 +592,6 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
                             opcionPK.setTRif(json.getString("rifEmpresa"));
                             
                             opcion.setOpcion(json2.getString("opcion"));
-                            System.out.println(json2.getString("opcion"));
                             opcion.setOpcionesPreguntaPK(opcionPK);
 
                             opciones.add(opcion);
@@ -708,7 +712,7 @@ public class TEncuestaFacadeREST extends AbstractFacade<TEncuesta> {
             return token.toString();
 
         } catch (JSONException | ParseException ex) {
-            return "{\"token\":{\"mensaje\":\"No se pudo actualizar la tarea\",\"falla\":true}}";
+            return "{\"token\":{\"mensaje\":\"No se pudo eliminar la tarea\",\"falla\":true}}";
 //            java.util.logging.Logger.getLogger(WebController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

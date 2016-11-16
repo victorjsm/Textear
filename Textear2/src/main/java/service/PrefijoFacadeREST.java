@@ -54,6 +54,10 @@ public class PrefijoFacadeREST extends AbstractFacade<Prefijo> {
         // Con un QUERY se obtienen todos los prefijos almacenados en el sistema,
         // se coloca en formato arreglo de JSON y se envia al servicio front-end.
         List<Prefijo> temp = super.findWithQuery("SELECT p FROM Prefijo p");
+        for (int k = 0; k < temp.size(); k++) {
+
+            em.refresh(temp.get(k));
+        }
 
         String json = List_to_JSONString(temp);
         return json;
@@ -72,6 +76,7 @@ public class PrefijoFacadeREST extends AbstractFacade<Prefijo> {
         // se coloca en formato JSON y se envia devuelta al servio front-end.
         
         Prefijo temp = super.find(cod);
+        em.refresh(temp);
         return temp.toString();
     }
     
