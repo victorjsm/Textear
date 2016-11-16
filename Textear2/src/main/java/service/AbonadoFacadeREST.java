@@ -251,6 +251,26 @@ public class AbonadoFacadeREST extends AbstractFacade<Abonado> {
         String json = List_to_JSONString(temp);
         return json;
     }
+    
+    // CONTAR ABONADOS
+    // Procedimiento por el cual el REST recibe el RIF de una empresa en particular,
+    // y retorna el numero de abonados asociados a esa empresa.
+    // El REST recibe el rif via una llamada GET
+    @GET
+    @Path("abonadosCOUNT/{rif}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String count_abonados(@PathParam("rif") String rif) {
+
+        // Se utiliza un query asoaciado al entitymanager para obtener todos
+        // los abonados asociados a ese RIF en particular
+        List<Abonado> temp = super.findWithQuery(
+                "SELECT a FROM Abonado a WHERE a.abonadoPK.rifEmpresa = \"" + rif + "\" "
+                + "AND a.negra = false");
+
+        return "{ \"numero\": " + Integer.toString(temp.size()) + "}";
+    }
+    
+    
 
     // ELIMINAR ABONADO
     // Procedimiento por el cual el REST recibe informacion de uno o mas abonados 

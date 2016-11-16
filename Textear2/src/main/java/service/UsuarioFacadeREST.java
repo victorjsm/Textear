@@ -213,6 +213,24 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
         String json = List_to_JSONString(temp);
         return json;
     }
+    
+    // OBTENER NUMERO USUARIOS
+    // Procedimiento por el cual el REST recibe el RIF de una empresa en particular,
+    // y retorna el numero de usuarios asociados a esa empresa.
+    // El REST recibe el rif via una llamada GET
+    @GET
+    @Path("usuariosCOUNT/{rif}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String count_usuarios(@PathParam("rif") String rif) {
+
+        // Se utiliza un query asoaciado al entitymanager para obtener todos
+        // los usuarios asociados a ese RIF en particular
+        List<Usuario> temp = super.findWithQuery(
+                "SELECT u FROM Usuario u WHERE u.rifEmpresa.rif = \"" + rif + "\" AND"
+                + " u.tipo != 'cliente'");
+
+        return "{ \"numero\": " + Integer.toString(temp.size()) + "}";
+    }
 
     // OBTENER USUARIOS ADMIN
     // Procedimiento por el cual el REST envia al front una lista con todos los

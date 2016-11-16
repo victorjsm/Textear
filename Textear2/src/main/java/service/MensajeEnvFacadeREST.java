@@ -91,6 +91,22 @@ public class MensajeEnvFacadeREST extends AbstractFacade<MensajeEnv> {
         String json = List_to_JSONString(temp);
         return json;
     }
+    // OBTENER NUMERO MENSAJES
+    // Procedimiento por el cual el REST recibe el Acronimo de una empresa en particular,
+    // y retorna el numero de mensaes recibidos de empresa.
+    // El REST recibe el rif via una llamada GET
+    @GET
+    @Path("mensajesCOUNT/{acro}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String Count_mensajes(@PathParam("acro") String acro) {
+
+        // Se utiliza un query asoaciado al entitymanager para obtener todos
+        // los abonados asociados a ese RIF en particular
+        List<MensajeEnv> temp = super.findWithQuery(
+                "SELECT m FROM MensajeRec m WHERE m.mensajeRecPK.acronimo = \"" + acro + "\" ");
+
+        return "{ \"numero\": " + Integer.toString(temp.size()) + "}";
+    }
     
     // ELIMINAR MENSAJE
     // Procedimiento por el cual el REST recibe informacion de uno o mas mensajes 
