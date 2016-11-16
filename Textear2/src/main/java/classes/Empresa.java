@@ -185,6 +185,7 @@ public class Empresa implements Serializable {
                 + "\"direccion\":\"" + direccion + "\","
                 + "\"telefono\":\"" + telefono + "\","
                 + "\"rif\":\"" + rif + "\","
+                + "\"acronimo\":\"" + acronimo + "\","
                 + "\"saldo\":" + saldo  + "}";
         return salida;
     }
