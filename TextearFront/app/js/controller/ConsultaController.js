@@ -6,14 +6,14 @@
 
 
 app.controller('ConsultaController', [
-    '$scope', '$localStorage', '$resource', '$http', '$q', 'ModalService', 'AuthenticationService',
-    function ($scope, $localStorage, $resource, $http, $q, ModalService, DTOptionsBuilder, DTColumnBuilder, DTColumnDefBuilder, AuthenticationService) {
+    '$scope', '$localStorage', '$resource', '$http', 'ModalService', 'AuthenticationService',
+    function ($scope, $localStorage, $resource, $http, ModalService, AuthenticationService, DTOptionsBuilder, DTColumnBuilder, DTColumnDefBuilder) {
 
 
         $scope.Logout = function () {
             AuthenticationService.Logout();
         };
-        
+
         $scope.acceso = function (user, action) {
             if (user === 'basico') {
                 return false;
@@ -33,13 +33,14 @@ app.controller('ConsultaController', [
             }
         };
 
-        $scope.selected = {};
+
         $scope.terminoCrear = false;
-        var vm = this;
         $scope.user = $localStorage.currentUser;
 
         var tconsultaGET = $resource('http://localhost:8080/Textear2/webresources/classes.tconsulta/TconsultaGET/:rif', {rif: '@RIF'});
         var tconsultaPOST = $resource('http://localhost:8080/Textear2/webresources/classes.tconsulta/tconsultaPOST/');
+        
+        var tconsultaDELETE = $resource('http://localhost:8080/Textear2/webresources/classes.tconsulta/tconsultaElimPOST/');
 
         var tconsultaEditPOST = $resource('http://localhost:8080/Textear2/webresources/classes.tconsulta/tconsultaEditPOST/');
 
@@ -48,9 +49,11 @@ app.controller('ConsultaController', [
                 {rif: '@RIF', nombre: '@Nombre'});
         var AbonadoGET = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosGET/:rif', {rif: '@RIF'});
         var CanalGET = $resource('http://localhost:8080/Textear2/webresources/classes.canal/canalGET');
-
-        $scope.dtInstance = {};
-
+        
+        $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+        $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+        $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+        $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
 
         $http.get('http://localhost:8080/Textear2/webresources/classes.bandeja/bandejas/'
@@ -142,7 +145,6 @@ app.controller('ConsultaController', [
                 modal.element.modal();
                 modal.close.then(function (result) {
                     if (result.mensaje !== null) {
-                        console.log(result);
                         if (result.eliminar) {
                             var tarea = {
                                 abonados: result.destinatarios,
@@ -262,6 +264,7 @@ app.controller('ConsultaController', [
                 if (!jQuery.isEmptyObject(response)) {
                     InvModal(response.token['mensaje'], true);
                 } else {
+                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
                     InvModal(mensaje, false);
                 }
             });
@@ -294,14 +297,8 @@ app.controller('ConsultaController', [
             temp.$save(function (response) {
                 if (!jQuery.isEmptyObject(response)) {
                     InvModal(response.token['mensaje'], true);
-//                    $scope.MensajeClass = 'alert-success';
-//                    $scope.resultadoMensaje = response.token['mensaje'];
-//                    $scope.terminoCrear = true;
                 } else {
-//                    $scope.MensajeClass = 'alert-danger';
-//                    $scope.resultadoMensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-//                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-//                    $scope.terminoCrear = true;
+                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
                     InvModal(mensaje, false);
                 }
             });
@@ -325,6 +322,90 @@ app.controller('ConsultaController', [
             });
         }
         ;
+
+        $scope.selected = {};
+        var selectedAction = {};
+        $scope.selectAll = false;
+        $scope.selectOne = false;
+
+        //  Funciones relacionadas a la seleccion de los elementos en la tabla de
+//  abonados
+
+//        $scope.toggleAll = function (selectAll, selectedItems) {
+//            for (var ci in selectedItems) {
+//                selectedItems[ci] = selectAll;
+//                if (selectedAction.hasOwnProperty(ci)) {
+//                    delete selectedAction[ci];
+//                } else {
+//                    selectedAction[ci] = true;
+//                }
+//                ;
+//            }
+//            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+//        };
+        $scope.addselect = function (id, obj) {
+            if (selectedAction.hasOwnProperty(id)) {
+                delete selectedAction[id];
+            } else {
+                selectedAction[id] = obj;
+            }
+            ;
+            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+        };
+        
+        $scope.borrar = function () {
+            $scope.loading = true;
+            var tareas = [];
+
+            for (var ci in $scope.selected) {
+                if ($scope.selected[ci]) {
+                    var tarea = {
+                        abonados: selectedAction[ci].abonados,
+                        contenido: selectedAction[ci]
+                    }
+                    tareas.push(tarea);
+                }
+            }
+            eliminarTareaAbonados(tareas);
+
+        };
+
+        function eliminarTareaAbonados(Tareas) {
+            $scope.loading = true;
+            var final = new tconsultaDELETE({
+                tareas: []
+            });
+            for (var id in Tareas) {
+                var temp = {
+                    arreglo: [],
+                    mensaje: Tareas[id].contenido
+                };
+                var mensaje;
+                for (var i = 0; i < Tareas[id].abonados.length; i++) {
+                    var temp2 = ({
+                        telefono: Tareas[id].abonados[i].telefono,
+                        ci: Tareas[id].abonados[i].ci,
+                        nombre: Tareas[id].abonados[i].nombre,
+                        rifEmpresa: $localStorage.currentUser.empresa.rif
+                    });
+                    temp.arreglo.push(temp2);
+                }
+                ;
+                final.tareas.push(temp);
+            }
+
+            final.$save(function (response) {
+                if (!jQuery.isEmptyObject(response)) {
+                    InvModal(response.token['mensaje'], true);
+                } else {
+                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
+                    InvModal(mensaje, false);
+                }
+            });
+            $scope.loading = false;
+        }
+        ;
+
 
 
 

@@ -33,11 +33,7 @@ app.controller('MensajeController', [
         };
 
 
-        $scope.selected = {};
-        var selectedAction = {};
-        var selectedElem = {};
-        $scope.selectAll = false;
-        $scope.selectOne = false;
+
         $scope.user = $localStorage.currentUser;
 
 
@@ -59,6 +55,11 @@ app.controller('MensajeController', [
         var tmensajePOST = $resource('http://localhost:8080/Textear2/webresources/classes.tmensaje/tmensajePOST');
         var tmensajeEditPOST = $resource('http://localhost:8080/Textear2/webresources/classes.tmensaje/tmensajeEditPOST');
         var tmensajeElimPOST = $resource('http://localhost:8080/Textear2/webresources/classes.tmensaje/tmensajeElimPOST');
+        
+        $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+        $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+        $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+        $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
 
         $http.get('http://localhost:8080/Textear2/webresources/classes.bandeja/bandejas/'
@@ -96,35 +97,6 @@ app.controller('MensajeController', [
                     $scope.abonados = temp;
 
                 });
-
-
-
-        //  Funciones relacionadas a la seleccion de los elementos en la tabla de
-        //  abonados
-
-        $scope.toggleAll = function (selectAll, selectedItems) {
-            for (var ci in selectedItems) {
-                selectedItems[ci] = selectAll;
-                if (selectedAction.hasOwnProperty(ci)) {
-                    delete selectedAction[ci];
-                } else {
-                    selectedAction[ci] = true;
-                }
-                ;
-            }
-            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
-        };
-        $scope.addselect = function (id, mensaje) {
-            if (selectedAction.hasOwnProperty(id)) {
-                delete selectedAction[id];
-                delete selectedElem[id];
-            } else {
-                selectedAction[id] = true;
-                selectedElem[id] = mensaje;
-            }
-            ;
-            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
-        };
 
 
         // Funciones para el manejo de los modals
@@ -200,62 +172,7 @@ app.controller('MensajeController', [
 
         };
 
-        $scope.borrar = function () {
-            $scope.loading = true;
-            var temp = [];
-            var tareas = [];
-            var i = 0;
-            for (var ci in $scope.selected) {
-                if ($scope.selected[ci]) {
-                    var tarea = {
-                        abonados: selectedElem[ci].abonados,
-                        contenido: selectedElem[ci]
-                    }
-                    tareas.push(tarea);
-                }
-            }
-            eliminarTareaAbonados(tareas);
-
-        };
-
-        function eliminarTareaAbonados(Tareas) {
-            $scope.loading = true;
-            var final = new tmensajeElimPOST({
-                tareas: []
-            });
-            for (var id in Tareas) {
-                var temp = new tmensajeElimPOST({
-                    arreglo: [],
-                    mensaje: Tareas[id].contenido
-                });
-                var mensaje;
-                for (var i = 0; i < Tareas[id].abonados.length; i++) {
-                    var temp2 = ({
-                        telefono: Tareas[id].abonados[i].telefono,
-                        ci: Tareas[id].abonados[i].ci,
-                        nombre: Tareas[id].abonados[i].nombre,
-                        rifEmpresa: $localStorage.currentUser.empresa.rif
-                    });
-                    temp.arreglo.push(temp2);
-                }
-                ;
-                final.tareas.push(temp);
-            }
-
-            final.$save(function (response) {
-                if (!jQuery.isEmptyObject(response)) {
-                    InvModal(response.token['mensaje'], true);
-                } else {
-                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-                    InvModal(mensaje, false);
-                }
-            });
-            $scope.loading = false;
-        }
-        ;
-
-
-
+ 
 
         function editarTareaAbonados(NuevosAbonados, contenido, ViejosAbonados) {
             $scope.loading = true;
@@ -405,6 +322,89 @@ app.controller('MensajeController', [
 
                 });
             });
+        }
+        ;
+        
+        $scope.selected = {};
+        var selectedAction = {};
+        $scope.selectAll = false;
+        $scope.selectOne = false;
+
+        //  Funciones relacionadas a la seleccion de los elementos en la tabla de
+//  abonados
+
+//        $scope.toggleAll = function (selectAll, selectedItems) {
+//            for (var ci in selectedItems) {
+//                selectedItems[ci] = selectAll;
+//                if (selectedAction.hasOwnProperty(ci)) {
+//                    delete selectedAction[ci];
+//                } else {
+//                    selectedAction[ci] = true;
+//                }
+//                ;
+//            }
+//            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+//        };
+        $scope.addselect = function (id, obj) {
+            if (selectedAction.hasOwnProperty(id)) {
+                delete selectedAction[id];
+            } else {
+                selectedAction[id] = obj;
+            }
+            ;
+            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+        };
+
+        $scope.borrar = function () {
+            $scope.loading = true;
+            var tareas = [];
+
+            for (var ci in $scope.selected) {
+                if ($scope.selected[ci]) {
+                    var tarea = {
+                        abonados: selectedAction[ci].abonados,
+                        contenido: selectedAction[ci]
+                    }
+                    tareas.push(tarea);
+                }
+            }
+            eliminarTareaAbonados(tareas);
+
+        };
+
+        function eliminarTareaAbonados(Tareas) {
+            $scope.loading = true;
+            var final = new tmensajeElimPOST({
+                tareas: []
+            });
+            for (var id in Tareas) {
+                var temp = {
+                    arreglo: [],
+                    mensaje: Tareas[id].contenido
+                };
+                var mensaje;
+                for (var i = 0; i < Tareas[id].abonados.length; i++) {
+                    var temp2 = ({
+                        telefono: Tareas[id].abonados[i].telefono,
+                        ci: Tareas[id].abonados[i].ci,
+                        nombre: Tareas[id].abonados[i].nombre,
+                        rifEmpresa: $localStorage.currentUser.empresa.rif
+                    });
+                    temp.arreglo.push(temp2);
+                }
+                ;
+                final.tareas.push(temp);
+            }
+
+            final.$save(function (response) {
+                if (!jQuery.isEmptyObject(response)) {
+                    InvModal(response.token['mensaje'], true);
+                } else {
+                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
+                    InvModal(mensaje, false);
+                }
+            });
+            $scope.loading = false;
         }
         ;
 

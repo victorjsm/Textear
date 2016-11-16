@@ -39,17 +39,14 @@
                                                     <thead>
                                                         <tr class="headings">
                                                             <th>
-                                                                <input type="checkbox" id="check-all" class="flat" 
+<!--                                                                <input type="checkbox" id="check-all" class="flat" 
                                                                        ng-model="selectAll" 
-                                                                       ng-click="toggleAll(selectAll, selected)">
+                                                                       ng-click="toggleAll(selectAll, selected)">-->
                                                             </th>
                                                             <th class="column-title">Codigo</th>
                                                             <th class="column-title">Longitud</th>
                                                             <th class="column-title">Precio MO</th>
                                                             <th class="column-title">Precio MO Abonado</th>
-                                                            <th class="column-title">Acciones: 
-                                                                <a ng-if="selectOne" ng-click="borrar()">Eliminar</a>
-                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -59,19 +56,15 @@
                                                                        ng-model="selected[canal.codigo]"
                                                                        ng-click="addselect(canal.codigo,canal)">
                                                             </td>
-                                                            <td class="datos">{{ canal.codigo }}</td>
-                                                            <td class="datos">{{ canal.longitud }}</td>
-                                                            <td class="datos">{{ canal.precioRecibir }}</td>
-                                                            <td class="datos">{{ canal.precioEnviar }}</td>
-                                                            <td class="a-center ">
-                                                                <div ng-if="selected[canal.codigo]">
-                                                                    <button class="modif-btn" ng-click="InvEditModal(canal)">Ver</button>
-
-                                                                </div>
-                                                            </td> 
+                                                            <td class="datos" style="cursor:pointer" ng-click="InvEditModal(canal)">{{ canal.codigo }}</td>
+                                                            <td class="datos" style="cursor:pointer" ng-click="InvEditModal(canal)">{{ canal.longitud }}</td>
+                                                            <td class="datos" style="cursor:pointer" ng-click="InvEditModal(canal)">{{ canal.precioRecibir }}</td>
+                                                            <td class="datos" style="cursor:pointer" ng-click="InvEditModal(canal)">{{ canal.precioEnviar }}</td>
+                                                            
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <button type="button" class="btn btn-primary" ng-if="selectOne" ng-click="borrar()">Eliminar</button>
                                             </div>
                                             
                                             

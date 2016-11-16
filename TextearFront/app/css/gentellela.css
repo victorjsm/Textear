@@ -10,7 +10,7 @@
 
 .nav-sm .container.body .col-md-3.left_col.menu_fixed {
   position: fixed;
-  height: 100%; }
+  min-height: 30%; }
 
 .nav-sm .container.body .col-md-3.left_col .mCSB_container,
 .nav-sm .container.body .col-md-3.left_col .mCustomScrollBox {
@@ -195,7 +195,7 @@
   z-index: 9999; }
 
 .nav-md .container.body .col-md-3.left_col.menu_fixed {
-  height: 100%;
+  min-height: 30%;
   position: fixed; }
 
 body .container.body .right_col {

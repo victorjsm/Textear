@@ -56,12 +56,6 @@ app.config(function ($stateProvider, $urlRouterProvider) {
                 controller: 'AbonadosController',
                 controllerAs: 'vm'
             })
-            .state('CrearAbonados', {
-                url: '/crear_abonados',
-                templateUrl: 'views/CrearAbonados.html',
-                controller: 'AbonadosController',
-                controllerAs: 'vm'
-            })
             .state('Grupos', {
                 url: '/grupos',
                 templateUrl: 'views/Grupos.html',

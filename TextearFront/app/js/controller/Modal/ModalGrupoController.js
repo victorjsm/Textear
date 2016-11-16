@@ -113,6 +113,11 @@ app.controller('ModalEditGrupoController', [
         $scope.nombre = grupo.nombre;
 
         var seagrega = false;
+        
+        $scope.edit = false;
+        $scope.cambio = function () {
+            $scope.edit = true;
+        };
 
 
         var GruposGET = $resource('http://localhost:8080/Textear2/webresources/classes.grupo/gruposGETabo/:rif/:nombre',
@@ -260,9 +265,7 @@ app.controller('ModalEditGrupoController', [
             $('.modal-backdrop').remove();
             $('.sidebar-division').show();
             //  Now call close, returning control to the caller.
-            close({
-                resultado: null
-            }, 500); // close, but give 500ms for bootstrap to animate
+            close(null, 500); // close, but give 500ms for bootstrap to animate
         };
 
 

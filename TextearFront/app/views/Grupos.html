@@ -39,15 +39,13 @@
                                                     <thead>
                                                         <tr class="headings">
                                                             <th>
-                                                                <input type="checkbox" id="check-all" class="flat" 
+<!--                                                                <input type="checkbox" id="check-all" class="flat" 
                                                                        ng-model="selectAll" 
-                                                                       ng-click="toggleAll(selectAll, selected)">
+                                                                       ng-click="toggleAll(selectAll, selected)">-->
                                                             </th>
                                                             <th class="column-title">Nombre</th>
                                                             <th class="column-title">Miembros</th>
-                                                            <th class="column-title">Acciones: 
-                                                                <a ng-if="selectOne" ng-click="borrar()">Eliminar</a>
-                                                            </th>
+                                                            
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -57,17 +55,13 @@
                                                                        ng-model="selected[grupo.nombre]"
                                                                        ng-click="addselect(grupo.nombre)">
                                                             </td>
-                                                            <td class="datos">{{ grupo.nombre }}</td>
-                                                            <td class="datos">{{ grupo.numero }}</td>
-                                                            <td class="a-center ">
-                                                                <div ng-if="selected[grupo.nombre]">
-                                                                    <button class="modif-btn" ng-click="InvEditModal(grupo)">Ver</button>
-
-                                                                </div>
-                                                            </td> 
+                                                            <td style="cursor:pointer" class="datos" ng-click="InvEditModal(grupo)">{{ grupo.nombre }}</td>
+                                                            <td style="cursor:pointer" class="datos" ng-click="InvEditModal(grupo)">{{ grupo.numero }}</td>
+                                                             
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <button type="button" class="btn btn-primary" ng-if="selectOne" ng-click="borrar()">Eliminar</button>
                                             </div>
                                             
                                             

@@ -6,8 +6,39 @@
                 <h4 class="modal-title">Grupo</h4>
             </div>
             <div class="modal-body">
-                
-                <div  id="abonados" class="table-responsive data-fields">
+
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id-usuario">Nombre: <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <h4 >{{nombre}}</h4>
+                        </div>
+                    </div>
+                </form>
+
+
+                <div  class="table-responsive data-fields" ng-if="!edit">
+                    <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
+                        <thead>
+                            <tr class="headings">
+
+                                <th class="column-title">Nombre</th>
+                                <th class="column-title">Telefono</th>
+                                <th class="column-title">Cedula</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="abonado in ::abonados" class="even pointer">
+                                <td class="datos">{{ abonado.nombre}}</td>
+                                <td class="datos">{{ abonado.telefono}}</td>
+                                <td class="datos">{{ abonado.ci}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div  id="abonados" class="table-responsive data-fields"  ng-if="edit">
                     <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
                         <thead>
                             <tr class="headings">
@@ -26,16 +57,16 @@
                                 <td class="a-center ">
                                     <input type="checkbox" class="flat" name="table_records"
                                            ng-model="selected[abonado.ci]"
-                                           ng-click="addselect(abonado.ci,abonado,true)">
+                                           ng-click="addselect(abonado.ci, abonado, true)">
                                 </td>
-                                <td class="datos">{{ abonado.nombre }}</td>
-                                <td class="datos">{{ abonado.telefono }}</td>
-                                <td class="datos">{{ abonado.ci }}</td>
+                                <td class="datos">{{ abonado.nombre}}</td>
+                                <td class="datos">{{ abonado.telefono}}</td>
+                                <td class="datos">{{ abonado.ci}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div id="abonado-section" class="table-responsive">
                     <h4>Abonados <small> almacenados en al base de datos</small></h4>
                     <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
@@ -44,7 +75,7 @@
                                 <th>
                                     <input type="checkbox" id="check-all" class="flat" 
                                            ng-model="selectAll" 
-                                           ng-click="toggleAll(selectAll, selected,false)">
+                                           ng-click="toggleAll(selectAll, selected, false)">
                                 </th>
                                 <th class="column-title">Nombre</th>
                                 <th class="column-title">Telefono</th>
@@ -57,11 +88,11 @@
                                 <td class="a-center ">
                                     <input type="checkbox" class="flat" name="table_records"
                                            ng-model="selected[abonado.ci]"
-                                           ng-click="addselect(abonado.ci,abonado,false)">
+                                           ng-click="addselect(abonado.ci, abonado, false)">
                                 </td>
-                                <td class="datos">{{ abonado.nombre }}</td>
-                                <td class="datos">{{ abonado.telefono }}</td>
-                                <td class="datos">{{ abonado.ci }}</td>
+                                <td class="datos">{{ abonado.nombre}}</td>
+                                <td class="datos">{{ abonado.telefono}}</td>
+                                <td class="datos">{{ abonado.ci}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -79,9 +110,9 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="file in ::fileContent" class="even pointer">
-                                <td>{{ file.Nombre }}</td>
-                                <td>{{ file.Telefono }}</td>
-                                <td>{{ file.CI }}</td>
+                                <td>{{ file.Nombre}}</td>
+                                <td>{{ file.Telefono}}</td>
+                                <td>{{ file.CI}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -96,35 +127,37 @@
                         </label>                        
                     </li>
                 </ul>
-                <button ng-if="selectOne" class="btn btn-primary" ng-click="close()">Eliminar</button>
-                <button id="agregarbtn" type="button" ng-click="agregando();toggleNone()" class="btn btn-primary">Agregar Abonados</button>
-                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
+                <button ng-if="selectOne" class="btn btn-primary" ng-click="close()" ng-if="edit">Eliminar</button>
+                <button id="agregarbtn" type="button" ng-click="agregando();toggleNone()" class="btn btn-primary"
+                        ng-if="edit">Agregar Abonados</button>
+                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal" ng-if="edit">Guardar</button>
                 <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+                <button type="button" ng-click="cambio()" class="btn btn-primary" ng-if="!edit">Editar</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $("#fileContent2").hide();
         $("#titulo-preview").hide();
         $("#abonado-section").hide();
         $("#csvabonados").hide();
-        
-        $("#agregarbtn").click(function(){
+
+        $("#agregarbtn").click(function () {
             $("#abonado-section").show();
             $("#csvabonados").show();
             $("#agregarbtn").hide();
             $("#abonados").hide();
-            
+
         });
-        
-        $("#csv-btn").click(function(){
+
+        $("#csv-btn").click(function () {
             $("#grupo-section").show();
             $("#abonado-section").hide();
             $("#fileContent2").show();
             $("#titulo-preview").show();
         });
-    });    
+    });
 </script>

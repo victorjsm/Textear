@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 app.controller('EncuestaController', [
-    '$scope', '$localStorage', '$resource', '$http', '$q', 'ModalService', 'AuthenticationService',
-    function ($scope, $localStorage, $resource, $http, $q, ModalService, DTOptionsBuilder, DTColumnBuilder, DTColumnDefBuilder, AuthenticationService) {
+    '$scope', '$localStorage', '$resource', '$http', 'ModalService', 'AuthenticationService',
+    function ($scope, $localStorage, $resource, $http, ModalService, AuthenticationService) {
 
 
         $scope.Logout = function () {
@@ -31,9 +31,7 @@ app.controller('EncuestaController', [
             }
         };
 
-        $scope.selected = {};
         $scope.terminoCrear = false;
-        var vm = this;
         $scope.user = $localStorage.currentUser;
 
         var tencuestaGET = $resource('http://localhost:8080/Textear2/webresources/classes.tencuesta/TencuestaGET/:rif', {rif: '@RIF'});
@@ -41,15 +39,18 @@ app.controller('EncuestaController', [
 
         var tencuestaEditPOST = $resource('http://localhost:8080/Textear2/webresources/classes.tencuesta/tencuestaEditPOST/');
 
+        var tencuestaDELETE = $resource('http://localhost:8080/Textear2/webresources/classes.tencuesta/tencuestaElimPOST/');
+
         var GruposGETALL = $resource('http://localhost:8080/Textear2/webresources/classes.grupo/gruposGETALL/:rif', {rif: '@RIF'});
         var GruposGET = $resource('http://localhost:8080/Textear2/webresources/classes.grupo/gruposGETabo/:rif/:nombre',
                 {rif: '@RIF', nombre: '@Nombre'});
         var AbonadoGET = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosGET/:rif', {rif: '@RIF'});
         var CanalGET = $resource('http://localhost:8080/Textear2/webresources/classes.canal/canalGET');
 
-        $scope.dtInstance = {};
-
-
+        $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+        $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+        $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+        $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
         $http.get('http://localhost:8080/Textear2/webresources/classes.bandeja/bandejas/'
                 + $localStorage.currentUser.empresa.rif + '/salida')
@@ -76,31 +77,6 @@ app.controller('EncuestaController', [
                     }
                     ;
                 });
-
-//        $scope.dtOptions = DTOptionsBuilder.fromFnPromise(function ()
-//        {
-//            return tencuestaGET.query({rif: $localStorage.currentUser.empresa.rif}).$promise;
-//        });
-//
-//        // Create the table columns
-//        $scope.dtColumns = [
-//            DTColumnBuilder.newColumn('nombre').withTitle('Nombre'),
-//            DTColumnBuilder.newColumn('estado').withTitle('Estado'),
-//            DTColumnBuilder.newColumn('fechaEnvio').withTitle('Fecha Envio')
-//        ];
-//
-//        $scope.reloadData = reloadData;
-//        $scope.dtInstance = {};
-//
-//        function reloadData()
-//        {
-//            var resetPaging = false;
-//            $scope.dtInstance.reloadData(callback, resetPaging);
-//        };
-//        function callback(json)
-//        {
-//            console.log(json);
-//        };
 
 
         GruposGETALL.query({rif: $localStorage.currentUser.empresa.rif})
@@ -282,19 +258,12 @@ app.controller('EncuestaController', [
             ;
 
             temp.$save(function (response) {
+                $scope.terminoCrear = true;
                 if (!jQuery.isEmptyObject(response)) {
                     InvModal(response.token['mensaje'], true);
-//                    $scope.MensajeClass = 'alert-success';
-//                    $scope.resultadoMensaje = response.token['mensaje'];
-//                    $scope.terminoCrear = true;
-//                    $scope.tareas.push(encuesta);
-//                    $scope.dtInstance.rerender();
                 } else {
-                    $scope.MensajeClass = 'alert-danger';
-                    $scope.resultadoMensaje = "No se pudo comunicar con el servidor, intente mas tarde";
                     mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-                    $scope.terminoCrear = true;
-//                    InvModal(mensaje, false);
+                    InvModal(mensaje, false);
                 }
             });
             $scope.loading = false;
@@ -323,23 +292,73 @@ app.controller('EncuestaController', [
                         });
             }
             ;
+
             temp.$save(function (response) {
                 if (!jQuery.isEmptyObject(response)) {
                     InvModal(response.token['mensaje'], true);
-//                    $scope.MensajeClass = 'alert-success';
-//                    $scope.resultadoMensaje = response.token['mensaje'];
-//                    $scope.terminoCrear = true;
                 } else {
-                    $scope.MensajeClass = 'alert-danger';
-                    $scope.resultadoMensaje = "No se pudo comunicar con el servidor, intente mas tarde";
                     mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-                    $scope.terminoCrear = true;
-//                    InvModal(mensaje, false);
+                    InvModal(mensaje, false);
                 }
             });
             $scope.loading = false;
         }
         ;
+        
+        $scope.borrar = function () {
+            $scope.loading = true;
+            var tareas = [];
+
+            for (var ci in $scope.selected) {
+                if ($scope.selected[ci]) {
+                    var tarea = {
+                        abonados: selectedAction[ci].abonados,
+                        contenido: selectedAction[ci]
+                    }
+                    tareas.push(tarea);
+                }
+            }
+            eliminarTareaAbonados(tareas);
+
+        };
+        
+        function eliminarTareaAbonados(Tareas) {
+            $scope.loading = true;
+            var final = new tencuestaDELETE({
+                tareas: []
+            });
+            for (var id in Tareas) {
+                var temp = {
+                    arreglo: [],
+                    mensaje: Tareas[id].contenido
+                };
+                var mensaje;
+                for (var i = 0; i < Tareas[id].abonados.length; i++) {
+                    var temp2 = ({
+                        telefono: Tareas[id].abonados[i].telefono,
+                        ci: Tareas[id].abonados[i].ci,
+                        nombre: Tareas[id].abonados[i].nombre,
+                        rifEmpresa: $localStorage.currentUser.empresa.rif
+                    });
+                    temp.arreglo.push(temp2);
+                }
+                ;
+                final.tareas.push(temp);
+            }
+
+            final.$save(function (response) {
+                if (!jQuery.isEmptyObject(response)) {
+                    InvModal(response.token['mensaje'], true);
+                } else {
+                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
+                    InvModal(mensaje, false);
+                }
+            });
+            $scope.loading = false;
+        }
+        ;
+        
+        
         function InvModal(mensaje, reload) {
 
             ModalService.showModal({
@@ -357,38 +376,39 @@ app.controller('EncuestaController', [
             });
         }
         ;
+        $scope.selected = {};
+        var selectedAction = {};
+        $scope.selectAll = false;
+        $scope.selectOne = false;
+
+        //  Funciones relacionadas a la seleccion de los elementos en la tabla de
+//  abonados
+
+//        $scope.toggleAll = function (selectAll, selectedItems) {
+//            console.log($scope.meh);
+//            for (var ci in selectedItems) {
+//                selectedItems[ci] = selectAll;
+//                if (selectedAction.hasOwnProperty(ci)) {
+//                    delete selectedAction[ci];
+//                } else {
+//                    selectedAction[ci] = true;
+//                }
+//                ;
+//            }
+//            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+//        };
+        $scope.addselect = function (id, obj) {
+            if (selectedAction.hasOwnProperty(id)) {
+                delete selectedAction[id];
+            } else {
+                selectedAction[id] = obj;
+            }
+            ;
+            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+        };
+
+
 
 
 
     }]);
-
-app.controller('DataReloadWithPromiseCtrl', DataReloadWithPromiseCtrl);
-
-function DataReloadWithPromiseCtrl(DTOptionsBuilder, DTColumnBuilder, $resource, $localStorage, $scope) {
-    var vm = this;
-    var tencuestaGET = $resource('http://localhost:8080/Textear2/webresources/classes.tencuesta/TencuestaGET/:rif', {rif: '@RIF'});
-    vm.dtOptions = DTOptionsBuilder.fromFnPromise(function () {
-        return tencuestaGET.query({rif: $localStorage.currentUser.empresa.rif}).$promise;
-    }).withPaginationType('full_numbers');
-    vm.dtColumns = [
-        DTColumnBuilder.newColumn('nombre').withTitle('Nombre'),
-        DTColumnBuilder.newColumn('estado').withTitle('Estado'),
-        DTColumnBuilder.newColumn('fechaEnvio').withTitle('Fecha Envio')
-    ];
-    vm.newPromise = newPromise;
-    vm.reloadData = reloadData;
-    $scope.dtInstance = {};
-
-    function newPromise() {
-        return $resource('data1.json').query().$promise;
-    }
-
-    function reloadData() {
-        var resetPaging = true;
-        $scope.dtInstance.reloadData();
-    }
-
-    function callback(json) {
-        console.log(json);
-    }
-}

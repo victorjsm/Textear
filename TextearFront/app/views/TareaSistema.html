@@ -43,32 +43,18 @@
 
            
                                         <div class="col-sm-12 mail_view">
-                                            <div ng-controller="DataReloadWithPromiseCtrl as showCase">
-                                                <p>
-                                                    <button ng-click="showCase.reloadData()" type="button" class="btn btn-info">
-                                                        <i class="fa fa-refresh"></i>&nbsp;Reload data
-                                                    </button>
-                                                    <button ng-click="showCase.dtInstance.changeData(showCase.newPromise)" type="button" class="btn btn-info">
-                                                        <i class="fa fa-exchange"></i>&nbsp;Change data
-                                                    </button>
-                                                </p>
-                                                <table datatable dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="dtInstance" class="row-border hover"></table>
-                                            </div>
                                             <div  id="abonados" class="table-responsive">
                                                 <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action">
                                                     <thead>
                                                         <tr class="headings">
                                                             <th>
-                                                                <input type="checkbox" id="check-all" class="flat" 
+<!--                                                                <input type="checkbox" id="check-all" class="flat" 
                                                                        ng-model="selectAll" 
-                                                                       ng-click="toggleAll(selectAll, selected)">
+                                                                       ng-click="toggleAll(selectAll, selected)">-->
                                                             </th>
                                                             <th class="column-title">Nombre</th>
                                                             <th class="column-title">Estado</th>
                                                             <th class="column-title">Fecha Envio</th>
-                                                            <th class="column-title">Acciones: 
-                                                                <a ng-if="selectOne" ng-click="borrar()">Eliminar</a>
-                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -78,17 +64,17 @@
                                                                        ng-model="selected[tarea.nombre]"
                                                                        ng-click="addselect(tarea.nombre,tarea)">
                                                             </td>
-                                                            <td class="datos">{{ tarea.nombre }}</td>
-                                                            <td class="datos">{{ tarea.estado }}</td>
-                                                            <td class="datos">{{ tarea.fechaEnvio }}</td>
-                                                            <td class="a-center ">
-                                                                <div ng-if="selected[tarea.nombre]">
-                                                                    <button class="modif-btn" ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">Ver</button>                                                                    
-                                                                </div>
-                                                            </td> 
+                                                            <td class="datos" style="cursor:pointer" 
+                                                                ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">{{ tarea.nombre }}</td>
+                                                            <td class="datos" style="cursor:pointer" 
+                                                                ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">{{ tarea.estado }}</td>
+                                                            <td class="datos" style="cursor:pointer" 
+                                                                ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">{{ tarea.fechaEnvio }}</td>
+
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <button type="button" class="btn btn-primary" ng-if="selectOne" ng-click="borrar()">Eliminar</button>
                                             </div>
                                         </div>
 

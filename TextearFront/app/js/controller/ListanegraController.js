@@ -30,6 +30,11 @@ app.controller('ListanegraController',
                         }
                     }
                 };
+                
+                $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+                $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+                $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+                $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
 
 
@@ -49,9 +54,7 @@ app.controller('ListanegraController',
 
 //  Variables asociadas a la comunicacion con el REST
 
-                var AbonadoGET = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosGET/:rif', {rif: '@RIF'});
-                var AbonadoPOST = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosPOST/');
-                var AbonadoUPDATE = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosUPDATE/');
+                var AbonadosNegraGET = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosNegraGET/:rif', {rif: '@RIF'});
                 var AbonadoDELETE = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosDELETE/');
 
 
@@ -62,7 +65,7 @@ app.controller('ListanegraController',
 
 
 
-                AbonadoGET.query({rif: $localStorage.currentUser.empresa.rif})
+                AbonadosNegraGET.query({rif: $localStorage.currentUser.empresa.rif})
                         .$promise.then(function (temp) {
                             $scope.abonados = temp;
                             var lista = temp;
@@ -145,6 +148,35 @@ app.controller('ListanegraController',
                     });
                 }
                 ;
+                
+                $scope.InvEditModal = function (abonado) {
+
+                    ModalService.showModal({
+                        templateUrl: "views/Modal/EditModals/AbonadoModal.html",
+                        controller: "ModalEditAbonadoController",
+                        inputs: {
+                            abonado: abonado
+                        }
+                    }).then(function (modal) {
+                        modal.element.modal();
+                        modal.close.then(function (result) {
+                            if (result !== null) {
+
+                                var temp = new AbonadoUPDATE(result.abonado);
+
+                                temp.$save(function (response) {
+                                    if (!jQuery.isEmptyObject(response)) {
+                                        InvModal(response.token['mensaje'], true);
+                                    } else {
+                                        mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
+                                        InvModal(mensaje, true);
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                };
 
             }]);
 

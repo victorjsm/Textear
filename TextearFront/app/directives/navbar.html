@@ -27,4 +27,34 @@
       </ul>
     </nav>
   </div>
+    <div style="background: #EDEDED; padding-bottom: 10px">
+        <ul class="list-inline row navbar-boxes">
+            <li class="col-md-2 col-md-offset-1">
+                <i class="fa fa-share" aria-hidden="true"></i>
+                <h5>MENSAJES ENVIADOS</h5>
+                <h4>{{numero_enviados}}</h4>
+            </li>
+            <li class="col-md-2 middle-box">
+                <i class="fa fa-envelope"></i>
+                <h5>MENSAJES RECIBIDOS</h5>
+                <h4>{{numero_recibidos}}</h4>
+            </li>
+            <li class="col-md-2 middle-box">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <h5>ABONADOS</h5>
+                <h4>{{numero_abonados}}</h4>
+            </li>
+            <li class="col-md-2 middle-box">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <h5>USUARIOS</h5>
+                <h4>{{numero_usuarios}}</h4>
+            </li>
+            <li class="col-md-2 middle-box">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+                <h5>SALDO</h5>
+                <h4>{{user.empresa.saldo}}</h4>
+            </li>
+        </ul>
+        
+    </div>
 </div>

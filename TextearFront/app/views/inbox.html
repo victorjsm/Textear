@@ -7,8 +7,8 @@
                     <sidebar></sidebar>
                 </div>
             </div>
-            
-            
+
+
 
             <navbar></navbar>
             <!-- page content -->
@@ -34,41 +34,46 @@
                             <div class="x_panel">
                                 <div class="x_title">
                                     <button type="button" class="btn btn-success" ng-click="cambioVista('/crear_bandeja')">Crear Bandeja</button>
-                                    
+
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
                                     <div class="row">
                                         <div id="bandejas-menu" class="col-sm-2 mail_list_column">
-                                            
+
 
                                             <div class="right">
-                                                <button class="rec-btn" ng-click="filters1.Bandeja = ''">RECIBIDOS</button>
-                                                <!--<h2> <i class="fa fa-star rec-btn"></i> RECIBIDOS</h2>-->
+                                                <h2 style="cursor:pointer" ng-click="change()" class="rec-btn">
+                                                    <i class="fa fa-envelope"></i> RECIBIDOS
+                                                </h2>
                                             </div>
 
                                             <div id="band_rec">
-                                                <div id="band_rec" ng-repeat="bandeja in ban_entrada">
-                                                    <div class="mail_list rec-btn" style="padding-left: 15%" ng-click="filters1.Bandeja = bandeja.nombre">
-                                                        <div class="right">
-                                                            <button>{{bandeja.nombre}}</button>
+                                                <div ng-repeat="bandeja in ban_entrada">
+                                                    <div class="mail_list rec-btn" style="padding-left: 15%" >
+                                                        <div class="right" ng-click="filters1.Bandeja = bandeja.nombre" style="cursor:pointer">
+                                                            <h4>
+                                                                <i class="fa fa-folder-open-o"></i> {{bandeja.nombre}}
+                                                            </h4>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="mail_list" ng-click="filters1.Bandeja = ''">
+                                            <div class="mail_list" ng-click="change()">
                                                 <div class="right">
-                                                    <button class="env-btn">ENVIADOS</button>
-                                                    <!--<h2> <i class="fa fa-star env-btn"></i> ENVIADOS</h2>-->
+                                                    <h2 style="cursor:pointer" ng-click="change()" class="env-btn"> 
+                                                        <i class="fa fa-share"></i> ENVIADOS
+                                                    </h2>
                                                 </div>
                                             </div>
                                             <div id="band_env">
                                                 <div ng-repeat="bandeja in ban_salida">
-                                                    <div class="mail_list env-btn" style="padding-left: 15%" ng-click="filters1.Bandeja = bandeja.nombre">
-                                                        <div class="right">
-                                                            <button class="env-btn">{{bandeja.nombre}}</button>
-                                                            <!--<h3 class="env-btn">> {{bandeja.nombre}}</h3>-->
+                                                    <div class="mail_list env-btn" style="padding-left: 15%">
+                                                        <div class="right" ng-click="filters1.Bandeja = bandeja.nombre" style="cursor:pointer">
+                                                            <h4>
+                                                                <i class="fa fa-folder-open-o"></i> {{bandeja.nombre}}
+                                                            </h4>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -79,80 +84,100 @@
                                         <div class="col-sm-10 mail_view">
                                             
                                             <div  id="mensajes_recibidos" class="table-responsive">
-                                                <table id="datatable-responsive" class="table table-striped jambo_table bulk_action">
+                                                <table id="datatable-responsive" datatable="ng" 
+                                                       class="row-border hover table table-striped jambo_table bulk_action">
                                                     <thead>
                                                         <tr class="headings">
-                                                            <th>
-                                                                <input type="checkbox" id="check-all" class="flat">
-                                                            </th>
+                                                            <th></th>
                                                             <th class="column-title">Canal </th>
-                                                            <th class="column-title">Abonado </th>
+                                                            <th class="column-title">Tarea </th>
                                                             <th class="column-title">Mensaje </th>
-                                                            <th class="column-title">Estado </th>
-                                                            <th class="column-title">Enviar en </th>
-                                                            <th class="column-title">Carpeta </th>
-                                                            <th class="column-title no-link last"><span class="nobr">Action</span>
-                                                            </th>
-                                                            <th class="bulk-actions" colspan="7">
-                                                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                                            </th>
+                                                            <th class="column-title">Telefono </th>
                                                         </tr>
                                                     </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="message in rec_messages|filter:filters1" class="even pointer">
+                                                            <td class="a-center ">
+                                                                <input type="checkbox" class="flat" name="table_records"
+                                                                       ng-model="selected[message.telefono]"
+                                                                       ng-click="addselect(message.telefono, message)">
+                                                            </td>
+                                                            <td>{{message.canal}}</td>
+                                                            <td>{{message.clave}}</td>
+                                                            <td>{{message.mensaje}}</td>
+                                                            <td>{{message.telefono}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
 
-                                                    <tbody ng-repeat="message in rec_messages|filter:filters1">
-                                                        <tr class="even pointer">
-                                                            <td class="a-center ">
-                                                                <input type="checkbox" class="flat" name="table_records">
-                                                            </td>
-                                                            <td class=" ">121000040</td>
-                                                            <td class=" ">{{message.Telefono_emisor}}</td>
-                                                            <td class=" ">{{message.Mensaje}}<i class="success fa fa-long-arrow-up"></i></td>
-                                                            <td class=" ">Aprobado</td>
-                                                            <td class=" ">{{message.Fecha}}</td>
-                                                            <td class="">{{message.Bandeja}}</td>
-                                                            <td class=""><a href="#">View</a>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div id="mensajes_enviados" class="table-responsive">
-                                                <table id="datatable-responsive" class="table table-striped jambo_table bulk_action">
+    <!--                                            <div  id="mensajes_recibidos" class="table-responsive">
+                                                    <table id="datatable-responsive" class="table table-striped jambo_table bulk_action">
+                                                        <thead>
+                                                            <tr class="headings">
+                                                                <th>
+                                                                    <input type="checkbox" id="check-all" class="flat">
+                                                                </th>
+                                                                <th class="column-title">Canal </th>
+                                                                <th class="column-title">Abonado </th>
+                                                                <th class="column-title">Mensaje </th>
+                                                                <th class="column-title">Estado </th>
+                                                                <th class="column-title">Enviar en </th>
+                                                                <th class="column-title">Carpeta </th>
+                                                                <th class="column-title no-link last"><span class="nobr">Action</span>
+                                                                </th>
+                                                                <th class="bulk-actions" colspan="7">
+                                                                    <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody ng-repeat="message in rec_messages|filter:filters1">
+                                                            <tr class="even pointer">
+                                                                <td class="a-center ">
+                                                                    <input type="checkbox" class="flat" name="table_records">
+                                                                </td>
+                                                                <td class=" ">121000040</td>
+                                                                <td class=" ">{{message.Telefono_emisor}}</td>
+                                                                <td class=" ">{{message.Mensaje}}<i class="success fa fa-long-arrow-up"></i></td>
+                                                                <td class=" ">Aprobado</td>
+                                                                <td class=" ">{{message.Fecha}}</td>
+                                                                <td class="">{{message.Bandeja}}</td>
+                                                                <td class=""><a href="#">View</a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>-->
+                                            
+                                            <div  id="mensajes_enviados" class="table-responsive">
+                                                <table id="datatable-responsive" datatable="ng" 
+                                                       class="row-border hover table table-striped jambo_table bulk_action">
                                                     <thead>
                                                         <tr class="headings">
-                                                            <th>
-                                                                <input type="checkbox" id="check-all" class="flat">
-                                                            </th>
+                                                            <th></th>
                                                             <th class="column-title">Canal </th>
-                                                            <th class="column-title">Abonado </th>
+                                                            <th class="column-title">Tarea </th>
                                                             <th class="column-title">Mensaje </th>
-                                                            <th class="column-title">Estado </th>
-                                                            <th class="column-title">Enviar en </th>
-                                                            <th class="column-title">Carpeta </th>
-                                                            <th class="column-title no-link last"><span class="nobr">Action</span>
-                                                            </th>
-                                                            <th class="bulk-actions" colspan="7">
-                                                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                                            </th>
+                                                            <th class="column-title">Telefono </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody ng-repeat="message in env_messages|filter:filters1">
-                                                        <tr class="even pointer">
+                                                    <tbody>
+                                                        <tr ng-repeat="message in env_messages|filter:filters1" class="even pointer">
                                                             <td class="a-center ">
-                                                                <input type="checkbox" class="flat" name="table_records">
+                                                                <input type="checkbox" class="flat" name="table_records"
+                                                                       ng-model="selected[message.telefono]"
+                                                                       ng-click="addselect(message.telefono, message)">
                                                             </td>
-                                                            <td class=" ">121000040</td>
-                                                            <td class=" ">{{message.Telefono_emisor}}</td>
-                                                            <td class=" ">{{message.Mensaje}}<i class="success fa fa-long-arrow-up"></i></td>
-                                                            <td class=" ">Aprobado</td>
-                                                            <td class=" ">{{message.Fecha}}</td>
-                                                            <td class="">{{message.Bandeja}}</td>
-                                                            <td class=""><a href="#">View</a>
-                                                            </td>
+                                                            <td>{{message.canal}}</td>
+                                                            <td>{{message.clave}}</td>
+                                                            <td>{{message.mensaje}}</td>
+                                                            <td>{{message.telefono}}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            <button type="button" class="btn btn-primary" ng-if="selectOne" ng-click="borrar()">Eliminar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -166,21 +191,21 @@
     </div>
 </div>
 <script>
-                    $(document).ready(function () {
-                        $('#datatable-responsive').DataTable();
-                        $('#mensajes_enviados').hide();
-                        $("#band_env").hide();
-                        $(".env-btn").click(function () {
-                            $("#band_env").slideDown();
-                            $("#band_rec").slideUp();
-                            $("#mensajes_enviados").show();
-                            $("#mensajes_recibidos").hide();
-                        });
-                        $(".rec-btn").click(function () {
-                            $("#band_env").slideUp();
-                            $("#band_rec").slideDown();
-                            $("#mensajes_enviados").hide();
-                            $("#mensajes_recibidos").show();
-                        });
-                    });
+            $(document).ready(function () {
+                $('#datatable-responsive').DataTable();
+                $('#mensajes_enviados').hide();
+                $("#band_env").hide();
+                $(".env-btn").click(function () {
+                    $("#band_env").slideDown();
+                    $("#band_rec").slideUp();
+                    $("#mensajes_enviados").show();
+                    $("#mensajes_recibidos").hide();
+                });
+                $(".rec-btn").click(function () {
+                    $("#band_env").slideUp();
+                    $("#band_rec").slideDown();
+                    $("#mensajes_enviados").hide();
+                    $("#mensajes_recibidos").show();
+                });
+            });
 </script>

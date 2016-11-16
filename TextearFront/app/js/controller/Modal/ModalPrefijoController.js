@@ -44,6 +44,11 @@ app.controller('ModalEditPrefijoController', [
 
         $scope.prefijo = prefijo;
         $('.sidebar-division').hide();
+        
+        $scope.edit = false;
+        $scope.cambio = function () {
+            $scope.edit = true;
+        };
         //  This close function doesn't need to use jQuery or bootstrap, because
         //  the button has the 'data-dismiss' attribute.
         $scope.close = function () {

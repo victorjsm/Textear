@@ -33,6 +33,11 @@ app.controller('PrefijoController',
                         }
                     }
                 };
+                
+                $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+                $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+                $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+                $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
 //  Variables asociadas a la seleccion de mensajes con los checkbox
 

@@ -48,16 +48,13 @@
                                                     <thead>
                                                         <tr class="headings">
                                                             <th>
-                                                                <input type="checkbox" id="check-all" class="flat" 
+<!--                                                                <input type="checkbox" id="check-all" class="flat" 
                                                                        ng-model="selectAll" 
-                                                                       ng-click="toggleAll(selectAll, selected)">
+                                                                       ng-click="toggleAll(selectAll, selected)">-->
                                                             </th>
                                                             <th class="column-title">Nombre</th>
                                                             <th class="column-title">Estado</th>
                                                             <th class="column-title">Fecha Envio</th>
-                                                            <th class="column-title">Acciones: 
-                                                                <a ng-if="selectOne" ng-click="borrar()">Eliminar</a>
-                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -67,17 +64,17 @@
                                                                        ng-model="selected[tarea.nombre]"
                                                                        ng-click="addselect(tarea.nombre,tarea)">
                                                             </td>
-                                                            <td class="datos">{{ tarea.nombre }}</td>
-                                                            <td class="datos">{{ tarea.estado }}</td>
-                                                            <td class="datos">{{ tarea.fechaEnvio }}</td>
-                                                            <td class="a-center ">
-                                                                <div ng-if="selected[tarea.nombre]">
-                                                                    <button class="modif-btn" ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">Ver</button>                                                                    
-                                                                </div>
-                                                            </td> 
+                                                            <td class="datos" style="cursor:pointer" 
+                                                                ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">{{ tarea.nombre }}</td>
+                                                            <td class="datos" style="cursor:pointer" 
+                                                                ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">{{ tarea.estado }}</td>
+                                                            <td class="datos" style="cursor:pointer" 
+                                                                ng-click="InvEditModal(tarea,abonados,grupos,bandejas,canales)">{{ tarea.fechaEnvio }}</td>
+
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <button type="button" class="btn btn-primary" ng-if="selectOne" ng-click="borrar()">Eliminar</button>
                                             </div>
                                         </div>
 

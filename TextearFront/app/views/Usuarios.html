@@ -46,9 +46,6 @@
                                                             <th class="column-title">ID</th>
                                                             <th class="column-title">Nombre</th>
                                                             <th class="column-title">Tipo</th>
-                                                            <th class="column-title">Acciones: 
-                                                                <a ng-if="selectOne" ng-click="borrar()">Eliminar</a>
-                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -58,18 +55,14 @@
                                                                        ng-model="selected[usuario.id]"
                                                                        ng-click="addselect(usuario.id,usuario)">
                                                             </td>
-                                                            <td class="datos">{{ usuario.id }}</td>
-                                                            <td class="datos">{{ usuario.nombre }}</td>
-                                                            <td class="datos">{{ usuario.tipo }}</td>
-                                                            <td class="a-center ">
-                                                                <div ng-if="selected[usuario.id]">
-                                                                    <button class="modif-btn" ng-click="InvEditModal(usuario)">Ver</button>
+                                                            <td class="datos" style="cursor:pointer" ng-click="InvEditModal(usuario)">{{ usuario.id }}</td>
+                                                            <td class="datos" style="cursor:pointer" ng-click="InvEditModal(usuario)">{{ usuario.nombre }}</td>
+                                                            <td class="datos" style="cursor:pointer" ng-click="InvEditModal(usuario)">{{ usuario.tipo }}</td>
 
-                                                                </div>
-                                                            </td> 
                                                         </tr>
                                                     </tbody>
                                                 </table>
+                                                <button type="button" class="btn btn-primary" ng-if="selectOne" ng-click="borrar()">Eliminar</button>
                                             </div>
                                             
                                             

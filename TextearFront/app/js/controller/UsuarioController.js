@@ -2,7 +2,7 @@ app.controller('UsuarioController',
         ['$scope', '$localStorage', '$resource', '$window', 'ModalService', '$location', 'AuthenticationService',
             function ($scope, $localStorage, $resource, $window, ModalService, $location, AuthenticationService) {
 
-
+                $scope.user = $localStorage.currentUser;
                 $scope.Logout = function () {
                     AuthenticationService.Logout();
                 };
@@ -29,7 +29,11 @@ app.controller('UsuarioController',
                         }
                     }
                 };
-
+                
+                $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+                $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+                $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+                $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 //  Variables asociadas a la seleccion de mensajes con los checkbox
 
                 $scope.selected = {};

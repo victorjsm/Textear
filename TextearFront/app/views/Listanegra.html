@@ -40,32 +40,38 @@
                                 </div>
                                 <div class="x_content">
                                     <div class="row">
+           
                                         <div class="col-sm-12 mail_view">
-                                            <div dir-paginate="abonado in abonados|filter:search|itemsPerPage:10">
-                                                <div class="mail_list">
-                                                    <div class="left">
-                                                        <i class="fa fa-circle"></i>
-                                                    </div>
-                                                    <div class="right">
-                                                        <div class="inbox-body">
-
-                                                            <div class="sender-info">
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <strong>Telefono: {{abonado.telefono}}</strong>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="view-mail">
-                                                                <h3>Nombre: {{abonado.nombre}}</h3>
-                                                                <p>CI: {{abonado.ci}}</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div  id="abonados" class="table-responsive">
+                                                <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <th>
+<!--                                                                <input type="checkbox" id="check-all" class="flat" 
+                                                                       ng-model="selectAll" 
+                                                                       ng-click="toggleAll(selectAll, selected)">-->
+                                                            </th>
+                                                            <th class="column-title">Nombre</th>
+                                                            <th class="column-title">Telefono</th>
+                                                            <th class="column-title">Cedula</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="abonado in ::abonados" class="even pointer">
+                                                            <td class="a-center ">
+                                                                <input type="checkbox" class="flat" name="table_records"
+                                                                       ng-model="selected[abonado.telefono]"
+                                                                       ng-click="addselect(abonado.telefono,abonado)">
+                                                            </td>
+                                                            <td style="cursor:pointer" class="datos" ng-click="InvEditModal(abonado)">{{ abonado.nombre }}</td>
+                                                            <td style="cursor:pointer" class="datos" ng-click="InvEditModal(abonado)">{{ abonado.telefono }}</td>
+                                                            <td style="cursor:pointer" class="datos" ng-click="InvEditModal(abonado)">{{ abonado.ci }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <button type="button" class="btn btn-primary" ng-if="selectOne" ng-click="borrar()">Eliminar</button>
+                                                
                                             </div>
-                                            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true" ></dir-pagination-controls>
-
                                         </div>
 
                                     </div>

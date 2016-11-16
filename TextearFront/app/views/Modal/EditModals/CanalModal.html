@@ -19,28 +19,32 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Descripcion </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
-                                   ng-model="canal.descripcion" placeholder="{{canal.descripcion}}">
+                                   ng-model="canal.descripcion" ng-if="edit" placeholder="{{canal.descripcion}}">
+                            <h4 style="text-align: center" ng-if="!edit">{{canal.descripcion}}</h4>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Longitud </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
-                                   ng-model="canal.longitud" placeholder="{{canal.longitud}}">
+                                   ng-model="canal.longitud" ng-if="edit" placeholder="{{canal.longitud}}">
+                            <h4 style="text-align: center" ng-if="!edit">{{canal.longitud}}</h4>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Precio MO </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
-                                   ng-model="canal.precioRecibir" placeholder="{{canal.precioRecibir}}">
+                                   ng-model="canal.precioRecibir" ng-if="edit" placeholder="{{canal.precioRecibir}}">
+                            <h4 style="text-align: center" ng-if="!edit">{{canal.precioRecibir}}</h4>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Precio Abonado MO </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
-                                   ng-model="canal.precioEnviar" placeholder="{{canal.precioEnviar}}">
+                                   ng-model="canal.precioEnviar" ng-if="edit" placeholder="{{canal.precioEnviar}}">
+                            <h4 style="text-align: center" ng-if="!edit">{{canal.precioEnviar}}</h4>
                         </div>
                     </div>
 
@@ -50,8 +54,9 @@
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">{{prefijo.codigoPrefijo}}</label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <input type="number" id="nombre-tarea" required="required"
-                                       class="form-control col-md-7 col-xs-12" ng-model="prefijo.precio"
+                                       class="form-control col-md-7 col-xs-12" ng-model="prefijo.precio" ng-if="edit"
                                        placeholder="{{prefijo.precio}}">
+                                <h4 style="text-align: center" ng-if="!edit">{{prefijo.precio}}</h4>
                             </div>
                         </div>
                     </div>
@@ -61,8 +66,11 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" ng-click="close()" class="btn btn-primary edit-elem" data-dismiss="modal">Guardar</button>
-                <button type="button" ng-click="cancel()" class="btn edit-elem">Cancelar</button>
+                <button type="button" ng-click="cambio()" class="btn btn-primary" ng-if="!edit">Editar</button>
+                <button type="button" ng-click="close()" class="btn btn-primary edit-elem" data-dismiss="modal"
+                        ng-if="edit">Guardar</button>
+                <button type="button" ng-click="cancel()" class="btn edit-elem"
+                        ng-if="edit">Cancelar</button>
             </div>
         </div>
     </div>

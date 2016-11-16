@@ -13,6 +13,11 @@ app.controller('PerfilController', [
         $scope.Logout = function () {
             AuthenticationService.Logout();
         };
+        
+        $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+        $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+        $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+        $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
         $scope.user = $localStorage.currentUser;
         $scope.edit = false;

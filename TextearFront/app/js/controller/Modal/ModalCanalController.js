@@ -44,6 +44,11 @@ app.controller('ModalCreateCanalController', [
 app.controller('ModalEditCanalController', [
     '$scope', '$element', 'canal', 'close',
     function ($scope, $element, canal, close) {
+        
+        $scope.edit = false;
+        $scope.cambio = function () {
+            $scope.edit = true;
+        };
 
         $scope.canal = canal;
         $scope.canal2 = {

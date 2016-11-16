@@ -34,6 +34,11 @@ app.controller('AbonadosController',
                         }
                     }
                 };
+                
+                $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+                $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+                $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+                $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
 //  Variables asociadas a la seleccion de mensajes con los checkbox
 
@@ -56,7 +61,7 @@ app.controller('AbonadosController',
                 var AbonadoUPDATE = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosUPDATE/');
                 var AbonadoDELETE = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosDELETE/');
 
-                var ListaNegraPOST = $resource('http://localhost:8080/Textear2/webresources/classes.listanegra/listanegraPOST/');
+                var abonadosNEGRA = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosNEGRA/');
 
 
 
@@ -101,27 +106,6 @@ app.controller('AbonadosController',
                     $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
                 };
 
-//  Funciones encargada de crear un solo abonado en la base de datos
-
-                $scope.crearabonado = function () {
-                    $scope.loading = true;
-                    var temp = new AbonadoPOST({
-                        arreglo: []
-                    });
-                    $scope.abonado.rifEmpresa = $localStorage.currentUser.empresa.rif;
-                    temp.arreglo.push($scope.abonado);
-                    temp.$save(function (response) {
-                        if (!jQuery.isEmptyObject(response)) {
-                            InvModal(response.token['mensaje'], false);
-                        } else {
-                            mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-                            InvModal(mensaje, false);
-                        }
-                    });
-
-                    $scope.loading = false;
-
-                };
 
 //  Funciones encargada de borrar un abonado de la base de datos             
                 $scope.borrar = function () {
@@ -149,80 +133,38 @@ app.controller('AbonadosController',
                 $scope.banear = function () {
                     $scope.loading = true;
                     var mensaje;
-                    var falla;
                     $localStorage.falla = "carajo";
-                    var temp = new AbonadoDELETE({
+                    var temp = new abonadosNEGRA({
                         arreglo: []
                     });
                     for (var tel in selectedAction) {
+                        selectedAction[tel].negra = true;
                         temp.arreglo.push(selectedAction[tel]);
                     }
                     ;
                     temp.$save(function (response) {
                         if (!jQuery.isEmptyObject(response)) {
-                            var temp = new ListaNegraPOST({
-                                arreglo: []
-                            });
-                            temp.arreglo.push($scope.abonado);
-                            temp.$save(function (response) {
-                                if (!jQuery.isEmptyObject(response)) {
-                                    InvModal(response.token['mensaje'], true);
-                                } else {
-                                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-                                    InvModal(mensaje, false);
-                                }
-                            });
+                            InvModal(response.token['mensaje'], true);
                         } else {
-                            $localStorage.falla = "bro";
-
+                            mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
+                            InvModal(mensaje, true);
                         }
                     });
-                    console.log($localStorage.falla);
-//                    if (falla) {
-//                    var temp = new ListaNegraPOST({
-//                        arreglo: []
-//                    });
-//
-//                    temp.arreglo.push($scope.abonado);
-//                    temp.$save(function (response) {
-//                        if (!jQuery.isEmptyObject(response)) {
-//                            InvModal(response.token['mensaje'], true);
-//                        } else {
-//                            mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-//                            InvModal(mensaje, false);
-//                        }
-//                    });
-//                    } else {
-//                        mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-//                        InvModal(mensaje, false);
-//                    }
-
                     $scope.loading = false;
 
                 };
 
 //  Funciones encargada de crear varios abonados en la base de datos                
 
-                $scope.crearabonados = function () {
+                function crearabonados(abonados) {
                     $scope.loading = true;
                     var temp = new AbonadoPOST({
-                        arreglo: []
+                        arreglo: abonados
                     });
                     var mensaje;
-                    for (var i = 0; i < $scope.fileContent.length; i++) {
-                        var temp2 = ({
-                            telefono: $scope.fileContent[i].Telefono,
-                            ci: $scope.fileContent[i].CI,
-                            nombre: $scope.fileContent[i].Nombre,
-                            rifEmpresa: $localStorage.currentUser.empresa.rif,
-                            negra: false
-                        });
-                        temp.arreglo.push(temp2);
-                    }
-                    ;
                     temp.$save(function (response) {
                         if (!jQuery.isEmptyObject(response)) {
-                            InvModal(response.token['mensaje'], false);
+                            InvModal(response.token['mensaje'], true);
                         } else {
                             mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
                             InvModal(mensaje, false);
@@ -276,6 +218,23 @@ app.controller('AbonadosController',
                                         InvModal(mensaje, true);
                                     }
                                 });
+                            }
+                        });
+                    });
+
+                };
+                
+                $scope.InvCreateModal = function () {
+
+                    ModalService.showModal({
+                        templateUrl: "views/Modal/CreateModals/AbonadoModal.html",
+                        controller: "ModalCreateAbonadoController",
+                        inputs: {}
+                    }).then(function (modal) {
+                        modal.element.modal();
+                        modal.close.then(function (result) {
+                            if (result !== null) {
+                                crearabonados(result.abonados);
                             }
                         });
                     });

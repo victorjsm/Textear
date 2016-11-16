@@ -62,15 +62,6 @@
                             <h4 ng-if="!edit">{{tarea.ayuda}}</h4>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="mensaje" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje de respuesta</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <textarea ng-if="edit" placeholder="{{tarea.respuesta}}" 
-                                      class="form-control col-md-7 col-xs-12" id="comment" ng-model="tarea.respuesta"></textarea>
-                            <h4 ng-if="!edit">{{tarea.respuesta}}</h4>
-                        </div>
-                    </div>
                     
                     <div class="form-group edit-sec" ng-if="!edit">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -243,6 +234,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Pregunta <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12" >
                             <h4>{{p.pregunta}}</h4>
+                            <h4> Respuesta: {{p.respuesta}}</h4>
                             <h5 ng-repeat="o  in p.opciones">{{$index}}) {{o.opcion}}</h5>
                         </div>
                     </div>

@@ -6,9 +6,9 @@
 
 
 app.controller('InscripcionController', [
-    '$scope', '$localStorage', '$resource', '$http', '$q', 'ModalService', 'AuthenticationService',
-    function ($scope, $localStorage, $resource, $http, $q,
-            ModalService, DTOptionsBuilder, DTColumnBuilder, DTColumnDefBuilder, AuthenticationService) {
+    '$scope', '$localStorage', '$resource', '$http','ModalService', 'AuthenticationService',
+    function ($scope, $localStorage, $resource, $http,
+            ModalService, AuthenticationService , DTOptionsBuilder, DTColumnBuilder, DTColumnDefBuilder) {
 
         $scope.Logout = function () {
             AuthenticationService.Logout();
@@ -32,13 +32,13 @@ app.controller('InscripcionController', [
                 }
             }
         };
-        $scope.selected = {};
         $scope.terminoCrear = false;
         $scope.user = $localStorage.currentUser;
-        var vm = this;
-
+        
         var tinscripcionGET = $resource('http://localhost:8080/Textear2/webresources/classes.tinscripcion/TinscripcionGET/:rif', {rif: '@RIF'});
         var tinscripcionPOST = $resource('http://localhost:8080/Textear2/webresources/classes.tinscripcion/tinscripcionPOST/');
+        
+        var tinscripcionDELETE = $resource('http://localhost:8080/Textear2/webresources/classes.tinscripcion/tinscripcionElimPOST/');
 
         var tinscripcionEditPOST = $resource('http://localhost:8080/Textear2/webresources/classes.tinscripcion/tinscripcionEditPOST/');
 
@@ -48,9 +48,10 @@ app.controller('InscripcionController', [
         var AbonadoGET = $resource('http://localhost:8080/Textear2/webresources/classes.abonado/abonadosGET/:rif', {rif: '@RIF'});
         var CanalGET = $resource('http://localhost:8080/Textear2/webresources/classes.canal/canalGET');
 
-        $scope.dtInstance = {};
-
-
+        $scope.numero_usuarios = $localStorage.currentUser.numero_usuarios;
+        $scope.numero_abonados = $localStorage.currentUser.numero_abonados;
+        $scope.numero_recibidos = $localStorage.currentUser.numero_recibidos;
+        $scope.numero_enviados = $localStorage.currentUser.numero_enviados;
 
         $http.get('http://localhost:8080/Textear2/webresources/classes.bandeja/bandejas/'
                 + $localStorage.currentUser.empresa.rif + '/salida')
@@ -293,14 +294,7 @@ app.controller('InscripcionController', [
             temp.$save(function (response) {
                 if (!jQuery.isEmptyObject(response)) {
                     InvModal(response.token['mensaje'], true);
-//                    $scope.MensajeClass = 'alert-success';
-//                    $scope.resultadoMensaje = response.token['mensaje'];
-//                    $scope.terminoCrear = true;
                 } else {
-//                    $scope.MensajeClass = 'alert-danger';
-//                    $scope.resultadoMensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-//                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
-//                    $scope.terminoCrear = true;
                     InvModal(mensaje, false);
                 }
             });
@@ -322,6 +316,89 @@ app.controller('InscripcionController', [
 
                 });
             });
+        }
+        ;
+        
+        $scope.selected = {};
+        var selectedAction = {};
+        $scope.selectAll = false;
+        $scope.selectOne = false;
+
+        //  Funciones relacionadas a la seleccion de los elementos en la tabla de
+//  abonados
+
+//        $scope.toggleAll = function (selectAll, selectedItems) {
+//            for (var ci in selectedItems) {
+//                selectedItems[ci] = selectAll;
+//                if (selectedAction.hasOwnProperty(ci)) {
+//                    delete selectedAction[ci];
+//                } else {
+//                    selectedAction[ci] = true;
+//                }
+//                ;
+//            }
+//            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+//        };
+        $scope.addselect = function (id, obj) {
+            if (selectedAction.hasOwnProperty(id)) {
+                delete selectedAction[id];
+            } else {
+                selectedAction[id] = obj;
+            }
+            ;
+            $scope.selectOne = !jQuery.isEmptyObject(selectedAction);
+        };
+
+        $scope.borrar = function () {
+            $scope.loading = true;
+            var tareas = [];
+
+            for (var ci in $scope.selected) {
+                if ($scope.selected[ci]) {
+                    var tarea = {
+                        abonados: selectedAction[ci].abonados,
+                        contenido: selectedAction[ci]
+                    }
+                    tareas.push(tarea);
+                }
+            }
+            eliminarTareaAbonados(tareas);
+
+        };
+
+        function eliminarTareaAbonados(Tareas) {
+            $scope.loading = true;
+            var final = new tinscripcionDELETE({
+                tareas: []
+            });
+            for (var id in Tareas) {
+                var temp = {
+                    arreglo: [],
+                    mensaje: Tareas[id].contenido
+                };
+                var mensaje;
+                for (var i = 0; i < Tareas[id].abonados.length; i++) {
+                    var temp2 = ({
+                        telefono: Tareas[id].abonados[i].telefono,
+                        ci: Tareas[id].abonados[i].ci,
+                        nombre: Tareas[id].abonados[i].nombre,
+                        rifEmpresa: $localStorage.currentUser.empresa.rif
+                    });
+                    temp.arreglo.push(temp2);
+                }
+                ;
+                final.tareas.push(temp);
+            }
+
+            final.$save(function (response) {
+                if (!jQuery.isEmptyObject(response)) {
+                    InvModal(response.token['mensaje'], true);
+                } else {
+                    mensaje = "No se pudo comunicar con el servidor, intente mas tarde";
+                    InvModal(mensaje, false);
+                }
+            });
+            $scope.loading = false;
         }
         ;
 
