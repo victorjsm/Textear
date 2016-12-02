@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/aganius/NetBeansProjects/Pasantia/TextearFront/app/directives/navbar.html</file>
-            <file>file:/home/aganius/NetBeansProjects/Pasantia/TextearFront/app/views/inbox.html</file>
+            <file>file:/home/aganius/NetBeansProjects/Pasantia/TextearFront/app/views/Modal/CreateModals/TareaInscripcionModal.html</file>
+            <file>file:/home/aganius/NetBeansProjects/Pasantia/TextearFront/app/views/Modal/CreateModals/TareaEncuestaModal.html</file>
+            <file>file:/home/aganius/NetBeansProjects/Pasantia/TextearFront/app/js/controller/Modal/ModalTencuestaController.js</file>
+            <file>file:/home/aganius/NetBeansProjects/Pasantia/TextearFront/app/js/controller/Modal/ModalTinscripcionController.js</file>
         </group>
     </open-files>
 </project-private>

@@ -10,57 +10,90 @@
             </div>
             <div class="modal-body">
 
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <form id="demo-form2" name="form" data-parsley-validate  novalidate class="form-horizontal form-label-left">
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Codigo </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="canal.codigo">
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="canal.codigo" name="codigo">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.codigo.$error.required" class="alert alert-danger">Codigo requerido</div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Descripcion </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="canal.descripcion">
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="canal.descripcion" name="descripcion">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.descripcion.$error.required" class="alert alert-danger">Descripcion requerida</div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Longitud </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="canal.longitud">
+                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="canal.longitud" name="longitud">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.longitud.$error.required" class="alert alert-danger">Longitud requerida</div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Precio MO </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="canal.precioRecibir">
+                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="canal.precioRecibir" name="precioRecibir">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.precioRecibir.$error.required" class="alert alert-danger">Precio por MO requerido</div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Precio Abonado MO </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="canal.precioEnviar">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h4>Precios por prefijo</h4>
-                        <div class="form-group" ng-repeat="prefijo in prefijos">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">{{prefijo.codigo}}</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="precios[prefijo.codigo]">
+                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="canal.precioEnviar" name="precioEnviar">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.precioEnviar.$error.required" class="alert alert-danger">Precio Abonado MO requerido</div>
                             </div>
                         </div>
                     </div>
 
+                        <div>
+                            <h4>Precios por prefijo</h4>
+                            <div class="form-group" ng-repeat="prefijo in prefijos">
+
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">{{prefijo.codigo}}</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                           ng-model="precios[prefijo.codigo]" name="prefijo">
+
+
+                                </div>
+                                <div ng-show="form.$submitted" class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+                                    <div ng-show="form.prefijo.$error.required" class="alert alert-danger">
+                                        Todos los precios de prefijos tienen que estar definidos</div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="submit" ng-click="close(form.$valid)" class="btn btn-primary">Guardar</button>
+                            <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+                        </div>
 
                 </form>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
-                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
-            </div>
+
         </div>
     </div>
 </div>

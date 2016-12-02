@@ -255,7 +255,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
 
         // Primero obtenemos todos los usuarios por cada cliente y inicializamos nuestro primer
         // arreglo JSON
-        lista = super.findWithQuery("SELECT u FROM Usuario u WHERE u.tipo = 'cliente'");
+        lista = super.findWithQuery("SELECT u FROM Usuario u WHERE u.tipo = \"cliente\"");
         try {
             arreglo = new JSONArray();
             // Por cada elemento en lista, se toma el elemento y se coloca en formato JSON,
@@ -267,7 +267,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
                 Usuario user = lista.get(i);
                 em.refresh(user);
                 JSONObject temp = new JSONObject(user.toString());
-                lista2 = super.findWithQuery("SELECT u FROM Usuario u WHERE u.rifEmpresa.rif = \"" + user.getRifEmpresa() + "\"");
+                lista2 = super.findWithQuery("SELECT u FROM Usuario u WHERE u.rifEmpresa.rif = \"" + user.getRifEmpresa().getRif() + "\"");
                 arreglo2 = new JSONArray();
 
                 // Ahora cada uno de estos usuarios es colocado en formato JSON y se agrega al arreglo2
@@ -280,6 +280,7 @@ public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
                 temp.put("usuarios", arreglo2);
                 arreglo.put(temp);
             }
+            
             return arreglo.toString();
 
         } catch (JSONException ex) {

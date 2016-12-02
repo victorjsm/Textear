@@ -17,7 +17,14 @@ app.controller('ModalCreateTmensajeController', [
         $scope.canales = canales;
 
 
-
+        $scope.selecciono = function (canal, canales) {
+            for (var x in canales) {
+                if (canales[x].codigo === canal) {
+                    $scope.tamano = canales[x].longitud;
+                    $scope.tarea.mensaje = "";
+                }
+            }
+        };
 
 
         //  Funciones relacionadas a la seleccion de los elementos en la tabla de
@@ -74,24 +81,25 @@ app.controller('ModalCreateTmensajeController', [
 
         //  This close function doesn't need to use jQuery or bootstrap, because
         //  the button has the 'data-dismiss' attribute.
-        $scope.close = function () {
-
-            var ListaFinal = [];
-            var i = 0;
-            for (var ci in $scope.selected) {
-                if ($scope.selected[ci]) {
-                    ListaFinal[i] = selectedElem[ci];
-                    i = i + 1;
+        $scope.close = function (valid) {
+            if (valid) {
+                var ListaFinal = [];
+                var i = 0;
+                for (var ci in $scope.selected) {
+                    if ($scope.selected[ci]) {
+                        ListaFinal[i] = selectedElem[ci];
+                        i = i + 1;
+                    }
                 }
+
+                close({
+                    destinatarios: ListaFinal,
+                    esabonado: aboSelected,
+                    mensaje: $scope.tarea
+                }, 500);
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
             }
-            
-            close({
-                destinatarios: ListaFinal,
-                esabonado: aboSelected,
-                mensaje: $scope.tarea
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because
@@ -115,7 +123,7 @@ app.controller('ModalCreateTmensajeController', [
 
 
 app.controller('ModalEditTmensajeController', [
-    '$scope', '$element', 'mensaje','edit','abonados', 'grupos', 'bandejas', 'canales', 'close',
+    '$scope', '$element', 'mensaje', 'edit', 'abonados', 'grupos', 'bandejas', 'canales', 'close',
     function ($scope, $element, mensaje, edit, abonados, grupos, bandejas, canales, close) {
 
         //  Variables asociadas a la seleccion de mensajes con los checkbox
@@ -128,13 +136,13 @@ app.controller('ModalEditTmensajeController', [
         $scope.selectOne = false;
         $scope.agregarAbo = false;
         var eliminar = false;
-        
-        
+
+
         var aboSelected = true;
 
         $scope.tarea = mensaje;
         $scope.edit = edit;
-        
+
 
         $scope.abonados = abonados;
         $scope.grupos = grupos;
@@ -147,16 +155,16 @@ app.controller('ModalEditTmensajeController', [
         //  Funciones relacionadas a la seleccion de los elementos en la tabla de
 //  abonados
 
-        $scope.agregarAbonados = function(){
+        $scope.agregarAbonados = function () {
             $scope.agregarAbo = true;
             $scope.toggleNone();
         };
-        
-        $scope.elim = function(){
+
+        $scope.elim = function () {
             eliminar = true;
         };
-        
-        $scope.cambio = function(){
+
+        $scope.cambio = function () {
             $scope.edit = true;
         };
 

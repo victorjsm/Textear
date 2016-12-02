@@ -10,13 +10,23 @@
             </div>
             <div class="modal-body">
 
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <form id="demo-form2" data-parsley-validate novalidate class="form-horizontal form-label-left" name="form">
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Canal de envio <span class="required">*</span></label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" ng-model="tarea.canal">
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <select class="form-control" ng-model="tarea.canal" name="canal" required="required"
+                                    ng-click="selecciono(tarea.canal,canales)">
                                 <option ng-repeat="canal in canales" >{{canal.codigo}}</option>
                             </select>
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.canal.$error.required" class="alert alert-danger">El canal de envio es requerido</div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <p>
+                                {{tamano}} caracteres
+                            </p>
                         </div>
                     </div>
                     
@@ -24,7 +34,11 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Nombre de la tarea <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="tarea.nombre">
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="tarea.nombre" name="nombre">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.nombre.$error.required" class="alert alert-danger">El nombre de la tarea es requerido</div>
+                            </div>
                         </div>
                     </div>
 
@@ -42,28 +56,44 @@
                     <div class="form-group">
                         <label for="mensaje" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje de bienvenida</label>
                         <div class="col-md-6 col-sm-6 col-xs-12" >
-                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text" name="mensaje" ng-model="tarea.bienvenida">
+                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text" 
+                                   name="bienvenida" ng-model="tarea.bienvenida" required="required" maxlength="{{tamano}}">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.bienvenida.$error.required" class="alert alert-danger">El mensaje de bienvenida es requerido</div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="mensaje" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje de ayuda</label>
                         <div class="col-md-6 col-sm-6 col-xs-12" >
-                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text" name="mensaje" ng-model="tarea.ayuda">
+                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text" 
+                                   ng-model="tarea.ayuda" name="ayuda" required="required" maxlength="{{tamano}}">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.ayuda.$error.required" class="alert alert-danger">El mensaje de ayuda es requerido</div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="mensaje" class="control-label col-md-3 col-sm-3 col-xs-12">Pregunta</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text" name="mensaje" ng-model="tarea.pregunta">
+                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text" 
+                                   name="pregunta" ng-model="tarea.pregunta" required="required" maxlength="{{tamano}}">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.pregunta.$error.required" class="alert alert-danger">La pregunta es requerida</div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="mensaje" class="control-label col-md-3 col-sm-3 col-xs-12">Mensaje de Respuesta</label>
                         <div class="col-md-6 col-sm-6 col-xs-12" >
-                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text" name="mensaje" ng-model="tarea.respuesta">
+                            <input id="mensaje" class="form-control col-md-7 col-xs-12" type="text"
+                                   ng-model="tarea.respuesta" name="respuesta" required="required" maxlength="{{tamano}}">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.respuesta.$error.required" class="alert alert-danger">El mensaje respuesta es requerido</div>
+                            </div>
                         </div>
                     </div>
                     
@@ -89,11 +119,7 @@
                             <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
                                 <thead>
                                     <tr class="headings">
-                                        <th>
-<!--                                            <input type="checkbox" id="check-all" class="flat" 
-                                                   ng-model="selectAll" 
-                                                   ng-click="toggleAll(selectAll, selected)">-->
-                                        </th>
+                                        <th></th>
                                         <th class="column-title">Nombre</th>
                                         <th class="column-title">Telefono</th>
                                         <th class="column-title">Cedula</th>
@@ -122,11 +148,7 @@
                             <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width: 100%">
                                 <thead>
                                     <tr class="headings">
-                                        <th>
-<!--                                            <input type="checkbox" id="check-all" class="flat" 
-                                                   ng-model="selectAll" 
-                                                   ng-click="toggleAll(selectAll, selected)">-->
-                                        </th>
+                                        <th></th>
                                         <th class="column-title">Nombre</th>
                                         <th class="column-title">Miembros</th>
 
@@ -153,15 +175,28 @@
                     <div class="form-group"> <!-- Date input -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Fecha de envio <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input class="form-control" id="date" name="date" placeholder="DD/MM/YYY" type="text" ng-model="tarea.fechaEnvio"/>
+                            <input class="form-control" id="date" placeholder="DD/MM/YYY" type="text" 
+                                   ng-model="tarea.fechaEnvio" name="fechaEnvio" required="required"/>
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.fechaEnvio.$error.required" class="alert alert-danger">La fecha de envio es requerida</div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group"> <!-- Date input -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Valido hasta <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input class="form-control" id="date" name="date" placeholder="DD/MM/YYY" type="text" ng-model="tarea.fechaExpiracion"/>
+                            <input class="form-control" id="date" placeholder="DD/MM/YYY" type="text" 
+                                   ng-model="tarea.fechaExpiracion" name="fechaExpiracion" required="required"/>
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.fechaExpiracion.$error.required" class="alert alert-danger">La fecha de expiracion es requerida</div>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" ng-click="close(form.$valid)" class="btn btn-primary">Guardar</button>
+                        <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
                     </div>
 
          
@@ -171,10 +206,7 @@
 
 
             </div>
-            <div class="modal-footer">
-                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
-                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
-            </div>
+            
         </div>
     </div>
 </div>

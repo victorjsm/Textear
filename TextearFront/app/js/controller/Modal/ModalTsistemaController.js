@@ -20,7 +20,6 @@ app.controller('ModalCreateTsistemaController', [
 
 
 
-
         //  Funciones relacionadas a la seleccion de los elementos en la tabla de
 //  abonados
 
@@ -71,24 +70,28 @@ app.controller('ModalCreateTsistemaController', [
 
         //  This close function doesn't need to use jQuery or bootstrap, because
         //  the button has the 'data-dismiss' attribute.
-        $scope.close = function () {
+        $scope.close = function (valid) {
 
-            var ListaFinal = [];
-            var i = 0;
-            for (var ci in $scope.selected) {
-                if ($scope.selected[ci]) {
-                    ListaFinal[i] = selectedElem[ci];
-                    i = i + 1;
+            if (valid) {
+
+                var ListaFinal = [];
+                var i = 0;
+                for (var ci in $scope.selected) {
+                    if ($scope.selected[ci]) {
+                        ListaFinal[i] = selectedElem[ci];
+                        i = i + 1;
+                    }
                 }
+
+                close({
+                    destinatarios: ListaFinal,
+                    esabonado: aboSelected,
+                    mensaje: $scope.tarea
+                }, 500);
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
             }
-            
-            close({
-                destinatarios: ListaFinal,
-                esabonado: aboSelected,
-                mensaje: $scope.tarea
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
+            ;
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because

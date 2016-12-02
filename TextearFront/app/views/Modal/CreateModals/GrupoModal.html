@@ -17,13 +17,17 @@
             </div>
             <div class="modal-body">
                 
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <form id="demo-form2" name="form" data-parsley-validate novalidate class="form-horizontal form-label-left">
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Nombre <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="nombre">
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="nombre" name="nombre">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.nombre.$error.required" class="alert alert-danger">Nombre del grupo requerido</div>
+                            </div>
                         </div>
                     </div>
 
@@ -32,11 +36,7 @@
                         <table datatable="ng" class="row-border hover table table-striped jambo_table bulk_action" style="width:100%">
                             <thead>
                                 <tr class="headings">
-                                    <th>
-<!--                                        <input type="checkbox" id="check-all" class="flat" 
-                                               ng-model="selectAll" 
-                                               ng-click="toggleAll(selectAll, selected)">-->
-                                    </th>
+                                    <th></th>
                                     <th class="column-title">Nombre</th>
                                     <th class="column-title">Telefono</th>
                                     <th class="column-title">Cedula</th>
@@ -76,6 +76,15 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="modal-footer">
+                            <button type="button" ng-click="close(true)" class="btn btn-primary">Guardar</button>
+                            <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" ng-click="close(form.$valid)" class="btn btn-primary">Guardar</button>
+                        <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
                     </div>
 
                 </form>
@@ -83,10 +92,7 @@
 
 
             </div>
-            <div class="modal-footer">
-                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
-                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
-            </div>
+            
         </div>
     </div>
 </div>

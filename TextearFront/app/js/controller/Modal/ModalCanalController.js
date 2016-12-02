@@ -14,14 +14,16 @@ app.controller('ModalCreateCanalController', [
         $scope.canal = {};
 
 
-        $scope.close = function () {
-            
-            close({
-                canal: $scope.canal,
-                precios: $scope.precios
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
+        $scope.close = function (valid) {
+            if (valid) {
+                close({
+                    canal: $scope.canal,
+                    precios: $scope.precios
+                }, 500);
+                $element.modal('hide');
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
+            }
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because
@@ -44,7 +46,7 @@ app.controller('ModalCreateCanalController', [
 app.controller('ModalEditCanalController', [
     '$scope', '$element', 'canal', 'close',
     function ($scope, $element, canal, close) {
-        
+
         $scope.edit = false;
         $scope.cambio = function () {
             $scope.edit = true;
@@ -52,10 +54,10 @@ app.controller('ModalEditCanalController', [
 
         $scope.canal = canal;
         $scope.canal2 = {
-            descripcion:null,
-            longitud:null,
-            precioRecibir:null,
-            precioEnviar:null
+            descripcion: null,
+            longitud: null,
+            precioRecibir: null,
+            precioEnviar: null
         };
         $scope.prefijos = {};
         $('.sidebar-division').hide();
@@ -65,7 +67,7 @@ app.controller('ModalEditCanalController', [
 
             close({
                 canal: $scope.canal,
-            }, 500); 
+            }, 500);
             $('.sidebar-division').show();
         };
 

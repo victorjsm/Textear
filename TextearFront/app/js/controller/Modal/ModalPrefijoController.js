@@ -13,13 +13,15 @@ app.controller('ModalCreatePrefijoController', [
         $scope.prefijo = {};
 
 
-        $scope.close = function () {
+        $scope.close = function (valid) {
+            if (valid) {
 
-            close({
-                prefijo: $scope.prefijo
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
+                close({
+                    prefijo: $scope.prefijo
+                }, 500);
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
+            }
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because
@@ -44,7 +46,7 @@ app.controller('ModalEditPrefijoController', [
 
         $scope.prefijo = prefijo;
         $('.sidebar-division').hide();
-        
+
         $scope.edit = false;
         $scope.cambio = function () {
             $scope.edit = true;
@@ -55,7 +57,7 @@ app.controller('ModalEditPrefijoController', [
 
             close({
                 prefijo: $scope.prefijo,
-            }, 500); 
+            }, 500);
             $('.sidebar-division').show();
         };
 

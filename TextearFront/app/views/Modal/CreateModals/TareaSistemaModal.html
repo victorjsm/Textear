@@ -10,26 +10,32 @@
             </div>
             <div class="modal-body">
 
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <form name="form" id="demo-form2" data-parsley-validate novalidate class="form-horizontal form-label-left">
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Canal de envio <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control" ng-model="tarea.canal">
+                            <select class="form-control" ng-model="tarea.canal" name="canal" required="required">
                                 <option ng-repeat="canal in canales" >{{canal.codigo}}</option>
                             </select>
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.canal.$error.required" class="alert alert-danger">El canal de envio es requerido</div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Nombre de la tarea <span class="required">*</span>
-                        </label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Nombre de la tarea</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="tarea.nombre">
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="tarea.nombre" name="nombre">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.nombre.$error.required" class="alert alert-danger">El nombre de la tarea es requerido</div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Bandeja <span class="required">*</span></label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="canal">Bandeja</label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control" ng-model="tarea.bandeja">
                                 <option ng-repeat="bandeja in bandejas" >{{bandeja.nombre}}</option>
@@ -59,9 +65,6 @@
                                 <thead>
                                     <tr class="headings">
                                         <th>
-<!--                                            <input type="checkbox" id="check-all" class="flat" 
-                                                   ng-model="selectAll" 
-                                                   ng-click="toggleAll(selectAll, selected)">-->
                                         </th>
                                         <th class="column-title">Nombre</th>
                                         <th class="column-title">Telefono</th>
@@ -92,9 +95,6 @@
                                 <thead>
                                     <tr class="headings">
                                         <th>
-<!--                                            <input type="checkbox" id="check-all" class="flat" 
-                                                   ng-model="selectAll" 
-                                                   ng-click="toggleAll(selectAll, selected)">-->
                                         </th>
                                         <th class="column-title">Nombre</th>
                                         <th class="column-title">Miembros</th>
@@ -122,17 +122,29 @@
                     <div class="form-group"> <!-- Date input -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Fecha de envio <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input class="form-control" id="date" name="date" placeholder="DD/MM/YYY" type="text" ng-model="tarea.fechaEnvio"/>
+                            <input class="form-control" id="date" placeholder="DD/MM/YYY" type="text" 
+                                   ng-model="tarea.fechaEnvio" name="fechaEnvio" required="required"/>
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.fechaEnvio.$error.required" class="alert alert-danger">La fecha de envio es requerida</div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group"> <!-- Date input -->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fecha">Valido hasta <span class="required">*</span></label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input class="form-control" id="date" name="date" placeholder="DD/MM/YYY" type="text" ng-model="tarea.fechaExpiracion"/>
+                            <input class="form-control" id="date" placeholder="DD/MM/YYY" type="text" 
+                                   ng-model="tarea.fechaExpiracion" name="fechaExpiracion" required="required"/>
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.fechaExpiracion.$error.required" class="alert alert-danger">La fecha de expiracion es requerida</div>
+                            </div>
                         </div>
                     </div>
-
+                    
+                    <div class="modal-footer">
+                        <button type="submit" ng-click="close(form.$valid)" class="btn btn-primary">Guardar</button>
+                        <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
+                    </div>
          
 
                 </form>
@@ -140,10 +152,7 @@
 
 
             </div>
-            <div class="modal-footer">
-                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
-                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
-            </div>
+            
         </div>
     </div>
 </div>

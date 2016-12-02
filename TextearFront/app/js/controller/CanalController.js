@@ -149,11 +149,12 @@ app.controller('CanalController',
                 };
                 $scope.InvCreateModal = function (prefijos) {
 
+
                     ModalService.showModal({
                         templateUrl: "views/Modal/CreateModals/CanalModal.html",
                         controller: "ModalCreateCanalController",
                         inputs: {
-                            prefijos: prefijos
+                            prefijos: prefijos,
                         }
                     }).then(function (modal) {
                         modal.element.modal();

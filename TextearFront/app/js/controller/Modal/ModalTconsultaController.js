@@ -18,7 +18,18 @@ app.controller('ModalCreateTconsultaController', [
         $scope.canales = canales;
 
 
-
+        $scope.selecciono = function (canal, canales) {
+            for (var x in canales) {
+                if (canales[x].codigo === canal) {
+                    $scope.tamano = canales[x].longitud;
+                    $scope.tarea.mensaje = "";
+                    $scope.tarea.bienvenida = "";
+                    $scope.tarea.pregunta = "";
+                    $scope.tarea.respuesta = "";
+                    $scope.tarea.ayuda = "";
+                }
+            }
+        };
 
 
         //  Funciones relacionadas a la seleccion de los elementos en la tabla de
@@ -71,24 +82,27 @@ app.controller('ModalCreateTconsultaController', [
 
         //  This close function doesn't need to use jQuery or bootstrap, because
         //  the button has the 'data-dismiss' attribute.
-        $scope.close = function () {
+        $scope.close = function (valid) {
 
-            var ListaFinal = [];
-            var i = 0;
-            for (var ci in $scope.selected) {
-                if ($scope.selected[ci]) {
-                    ListaFinal[i] = selectedElem[ci];
-                    i = i + 1;
+            if (valid) {
+
+                var ListaFinal = [];
+                var i = 0;
+                for (var ci in $scope.selected) {
+                    if ($scope.selected[ci]) {
+                        ListaFinal[i] = selectedElem[ci];
+                        i = i + 1;
+                    }
                 }
+
+                close({
+                    destinatarios: ListaFinal,
+                    esabonado: aboSelected,
+                    mensaje: $scope.tarea
+                }, 500);
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
             }
-            
-            close({
-                destinatarios: ListaFinal,
-                esabonado: aboSelected,
-                mensaje: $scope.tarea
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because

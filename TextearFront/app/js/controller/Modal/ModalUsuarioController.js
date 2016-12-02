@@ -9,19 +9,26 @@ app.controller('ModalCreateUsuarioController', [
 
         $('.sidebar-division').hide();
 
-        $scope.tipos = ['basico', 'medio', 'avanzado'];
+        if ($localStorage.currentUser.tipo === "admin") {
+            $scope.tipos = ['admin'];
+        } else {
+            $scope.tipos = ['basico', 'medio', 'avanzado'];
+        }
+
+
         $scope.u = {
             empresa: $localStorage.currentUser.empresa
         };
 
 
-        $scope.close = function () {
-
-            close({
-                usuario: $scope.u
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
+        $scope.close = function (valid) {
+            if (valid) {
+                close({
+                    usuario: $scope.u
+                }, 500);
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
+            }
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because
@@ -34,7 +41,7 @@ app.controller('ModalCreateUsuarioController', [
             $('.sidebar-division').show();
             //  Now call close, returning control to the caller.
             close({
-               usuario: null
+                usuario: null
             }, 500); // close, but give 500ms for bootstrap to animate
         };
 
@@ -56,7 +63,7 @@ app.controller('ModalEditUsuarioController', [
 
             close({
                 usuario: $scope.usuario,
-            }, 500); 
+            }, 500);
             $('.sidebar-division').show();
         };
 

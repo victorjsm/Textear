@@ -18,7 +18,15 @@ app.controller('ModalCreateTencuestaController', [
         $scope.canales = canales;
 
 
-
+        $scope.selecciono = function (canal, canales) {
+            for (var x in canales) {
+                if (canales[x].codigo === canal) {
+                    $scope.tamano = canales[x].longitud;
+                    $scope.tarea.bienvenida = "";
+                    $scope.tarea.ayuda = "";
+                }
+            }
+        };
 
 
         //  Funciones relacionadas a la seleccion de los elementos en la tabla de
@@ -65,11 +73,11 @@ app.controller('ModalCreateTencuestaController', [
         };
 
 
-        $scope.pregunta = {preguntas: [{pregunta: "", opciones: [{opcion: ""}]}]};
+        $scope.pregunta = {preguntas: [{pregunta: "", opciones: [{opcion: ""}, {opcion: ""}]}]};
 
 
         $scope.addPregunta = function () {
-            $scope.pregunta.preguntas.push({pregunta: "", opciones: [{opcion: ""}]});
+            $scope.pregunta.preguntas.push({pregunta: "", opciones: [{opcion: ""}, {opcion: ""}]});
         };
 
         $scope.addOpcion = function (pregunta) {
@@ -102,25 +110,29 @@ app.controller('ModalCreateTencuestaController', [
 
         //  This close function doesn't need to use jQuery or bootstrap, because
         //  the button has the 'data-dismiss' attribute.
-        $scope.close = function () {
+        $scope.close = function (valid) {
 
-            var ListaFinal = [];
-            var i = 0;
-            for (var ci in $scope.selected) {
-                if ($scope.selected[ci]) {
-                    ListaFinal[i] = selectedElem[ci];
-                    i = i + 1;
+            if (valid) {
+
+                var ListaFinal = [];
+                var i = 0;
+                for (var ci in $scope.selected) {
+                    if ($scope.selected[ci]) {
+                        ListaFinal[i] = selectedElem[ci];
+                        i = i + 1;
+                    }
                 }
-            }
-            $scope.tarea.preguntas = $scope.pregunta.preguntas;
+                $scope.tarea.preguntas = $scope.pregunta.preguntas;
 
-            close({
-                destinatarios: ListaFinal,
-                esabonado: aboSelected,
-                mensaje: $scope.tarea
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
+                close({
+                    destinatarios: ListaFinal,
+                    esabonado: aboSelected,
+                    mensaje: $scope.tarea
+                }, 500);
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
+            }
+            ;
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because
@@ -239,7 +251,7 @@ app.controller('ModalEditTencuestaController', [
         $scope.removeOpcion = function (index, pregunta) {
             var op = pregunta.opciones[index];
 
-                pregunta.opciones.splice(index, 1);
+            pregunta.opciones.splice(index, 1);
         };
 
 

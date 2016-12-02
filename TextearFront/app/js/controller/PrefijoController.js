@@ -137,7 +137,6 @@ app.controller('PrefijoController',
                         modal.element.modal();
                         modal.close.then(function (result) {
                             if (result.prefijo !== null) {
-                                console.log(result.prefijo);
                                 edit(result.prefijo);
                             }
                         });
@@ -145,10 +144,11 @@ app.controller('PrefijoController',
 
                 };
                 $scope.InvCreateModal = function () {
+                    
 
                     ModalService.showModal({
                         templateUrl: "views/Modal/CreateModals/PrefijoModal.html",
-                        controller: "ModalCreatePrefijoController",
+                        controller: "ModalCreatePrefijoController"
                     }).then(function (modal) {
                         modal.element.modal();
                         modal.close.then(function (result) {

@@ -11,30 +11,32 @@ app.controller('ModalCreateAbonadoController', [
         };
 
 
-        $scope.close = function () {
-            if ($scope.abonado !== null) {
-                $scope.abonado.rifEmpresa = $localStorage.currentUser.empresa.rif;
-                $scope.abonado.negra = false;
-                $scope.abonados[0] = $scope.abonado;
-            } else {
-                for (var i = 0; i < $scope.fileContent.length; i++) {
-                    var temp2 = ({
-                        telefono: $scope.fileContent[i].Telefono,
-                        ci: $scope.fileContent[i].CI,
-                        nombre: $scope.fileContent[i].Nombre,
-                        rifEmpresa: $localStorage.currentUser.empresa.rif,
-                        negra: false
-                    });
-                    $scope.abonados[i] = temp2;
+        $scope.close = function (valid) {
+            if (valid) {
+                if ($scope.abonado !== null) {
+                    $scope.abonado.rifEmpresa = $localStorage.currentUser.empresa.rif;
+                    $scope.abonado.negra = false;
+                    $scope.abonados[0] = $scope.abonado;
+                } else {
+                    for (var i = 0; i < $scope.fileContent.length; i++) {
+                        var temp2 = ({
+                            telefono: $scope.fileContent[i].Telefono,
+                            ci: $scope.fileContent[i].CI,
+                            nombre: $scope.fileContent[i].Nombre,
+                            rifEmpresa: $localStorage.currentUser.empresa.rif,
+                            negra: false
+                        });
+                        $scope.abonados[i] = temp2;
+                    }
+                    ;
                 }
-                ;
-            }
 
-            close({
-                abonados: $scope.abonados
-            }, 500);
-            $('.modal-backdrop').remove();
-            $('.sidebar-division').show();
+                close({
+                    abonados: $scope.abonados
+                }, 500);
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
+            }
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because

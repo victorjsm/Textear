@@ -9,7 +9,7 @@ app.controller('ModalCreateGrupoController', [
         var selectedAbo = {};
         $scope.selectAll = false;
         var selectOne = false;
-        
+
         //  Funciones relacionadas a la seleccion de los elementos en la tabla de
 //  abonados
 
@@ -25,7 +25,7 @@ app.controller('ModalCreateGrupoController', [
             }
             selectOne = !jQuery.isEmptyObject(selectedAction);
         };
-        
+
         $scope.toggleNone = function () {
             for (var ci in $scope.selected) {
                 if (selectedAction.hasOwnProperty(ci)) {
@@ -36,8 +36,8 @@ app.controller('ModalCreateGrupoController', [
                 }
             }
         };
-        
-        $scope.addselect = function (ci,abonado) {
+
+        $scope.addselect = function (ci, abonado) {
             if (selectedAction.hasOwnProperty(ci)) {
                 delete selectedAction[ci];
                 delete selectedAbo[ci];
@@ -55,38 +55,42 @@ app.controller('ModalCreateGrupoController', [
 
         $scope.abonados = abonados;
         $('.sidebar-division').hide();
-        
-        
-        
+
+
+
         //  This close function doesn't need to use jQuery or bootstrap, because
         //  the button has the 'data-dismiss' attribute.
-        $scope.close = function () {
-            
-            var abonadosFinal = [];
-            if (selectOne){
-                var i = 0;
-                for (var ci in $scope.selected) {
-                    if (selectedAbo.hasOwnProperty(ci)) {
-                        abonadosFinal[i] = selectedAbo[ci];
-                        i = i+1;
+        $scope.close = function (valid) {
+
+            if (valid) {
+
+                var abonadosFinal = [];
+                if (selectOne) {
+                    var i = 0;
+                    for (var ci in $scope.selected) {
+                        if (selectedAbo.hasOwnProperty(ci)) {
+                            abonadosFinal[i] = selectedAbo[ci];
+                            i = i + 1;
+                        }
                     }
+                } else {
+                    for (var i = 0; i < $scope.fileContent.length; i++) {
+                        var temp2 = ({
+                            telefono: $scope.fileContent[i].Telefono,
+                            ci: $scope.fileContent[i].CI,
+                            nombre: $scope.fileContent[i].Nombre
+                        });
+                        abonadosFinal[i] = temp2;
+                    }
+                    ;
                 }
-            } else {
-                for (var i = 0; i < $scope.fileContent.length; i++) {
-                    var temp2 = ({
-                        telefono: $scope.fileContent[i].Telefono,
-                        ci: $scope.fileContent[i].CI,
-                        nombre: $scope.fileContent[i].Nombre
-                    });
-                    abonadosFinal[i] = temp2;
-                };
-            }
-            close({
+                close({
                     abonados: abonadosFinal,
                     nombre: $scope.nombre
                 }, 500);
-            $('.modal-backdrop').remove();    
-            $('.sidebar-division').show();
+                $('.modal-backdrop').remove();
+                $('.sidebar-division').show();
+            }
         };
 
         //  This cancel function must use the bootstrap, 'modal' function because
@@ -113,7 +117,7 @@ app.controller('ModalEditGrupoController', [
         $scope.nombre = grupo.nombre;
 
         var seagrega = false;
-        
+
         $scope.edit = false;
         $scope.cambio = function () {
             $scope.edit = true;

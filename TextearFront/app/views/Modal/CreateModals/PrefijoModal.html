@@ -10,31 +10,41 @@
             </div>
             <div class="modal-body">
 
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                <form id="demo-form2" name="form" data-parsley-validate novalidate class="form-horizontal form-label-left">
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Codigo </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             
-                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="prefijo.codigo">
+                            <input type="text" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="prefijo.codigo" name="codigo">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.codigo.$error.required" class="alert alert-danger">Codigo requerido</div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-tarea">Costo MT </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" ng-model="prefijo.costoMT">
+                            <input type="number" id="nombre-tarea" required="required" class="form-control col-md-7 col-xs-12" 
+                                   ng-model="prefijo.costoMT" name="costoMT">
+                            <div ng-show="form.$submitted">
+                                <div ng-show="form.costoMT.$error.required" class="alert alert-danger">Costo MT requerido</div>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="submit" ng-click="close(form.$valid)" class="btn btn-primary">Guardar</button>
+                        <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
                     </div>
 
 
                 </form>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">Guardar</button>
-                <button type="button" ng-click="cancel()" class="btn">Cancelar</button>
-            </div>
+            
         </div>
     </div>
 </div>
