@@ -53,6 +53,9 @@ public class MensajeReceive implements MessageListener {
             if (!paso) {
                 paso = tmSingle.checkEncuesta(respuesta, telefono, clave, acronimo,canal);
             }
+            if (!paso) {
+                paso = tmSingle.checkInscripcion(respuesta, telefono, clave, acronimo,canal);
+            }
             if (!paso){
                 System.out.println("no es de ninguno");
             }
